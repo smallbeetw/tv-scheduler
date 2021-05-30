@@ -13,6 +13,8 @@
 # You should have received a copy of the GNU General Public License along
 # with this program; if not, see <http://www.gnu.org/licenses/>.
 
+source tv-scheduler.conf
+
 DATE=$1
 TIME=$2
 MINUTESm=$3
@@ -22,8 +24,13 @@ NAME=$5
 START_TIME=$DATE" "$TIME
 START_EPOCH=$(date -d "$START_TIME" +%s)
 
-TVSCH_PATH=/tmp
-TVSCH_BIN_PATH=/root
+# TVSCH_PATH=/root/tvschs
+# TVSCH_BIN_PATH=/root/tv-rec
+
+help()
+{
+	echo "tv-sch.sh DATE TIME MINUTES CHANNEL NAME"
+}
 
 past()
 {
@@ -78,6 +85,8 @@ conflict()
 	# TODO: careful between two date, last date, next date
 }
 
+help
+
 # the recording time should not be a past time
 past
 
@@ -87,9 +96,18 @@ conflict
 # generate tvsch file, request tv recording script
 echo "$TVSCH_BIN_PATH/tv-rec.sh $CHANNEL $MINUTESm $NAME" > $TVSCH_PATH/$DATE"_"$TIME"_"$MINUTESm"_"$CHANNEL"_"$NAME.tvsch
 
-# Add flag to file extension: [F]inish, [D]elete, [B]lock
+# Add flag to file extension: [F]inish, [D]one, [B]lock
 # Set flag to [F]inish after recording job is finished
 echo "mv $TVSCH_PATH/$DATE"_"$TIME"_"$MINUTESm"_"$CHANNEL"_"$NAME.tvsch $TVSCH_PATH/$DATE"_"$TIME"_"$MINUTESm"_"$CHANNEL"_"$NAME.tvschF" >> $TVSCH_PATH/$DATE"_"$TIME"_"$MINUTESm"_"$CHANNEL"_"$NAME.tvsch
 
+# request post recording script
+# echo "$TVSCH_BIN_PATH/tv-rec-post.sh $NAME $MINUTESm $CHANNEL" >> $TVSCH_PATH/$DATE"_"$TIME"_"$MINUTESm"_"$CHANNEL"_"$NAME.tvsch
+echo "$TVSCH_BIN_PATH/tv-rec-post.sh" >> $TVSCH_PATH/$DATE"_"$TIME"_"$MINUTESm"_"$CHANNEL"_"$NAME.tvsch
+
+# Set flag to [D]one after post recording job is done. It should includes moving video file to network storage
+echo "mv $TVSCH_PATH/$DATE"_"$TIME"_"$MINUTESm"_"$CHANNEL"_"$NAME.tvschF $TVSCH_PATH/$DATE"_"$TIME"_"$MINUTESm"_"$CHANNEL"_"$NAME.tvschD" >> $TVSCH_PATH/$DATE"_"$TIME"_"$MINUTESm"_"$CHANNEL"_"$NAME.tvsch
+
 # call at command to schedule the recording
 at $TIME $DATE -f $TVSCH_PATH/$DATE"_"$TIME"_"$MINUTESm"_"$CHANNEL"_"$NAME.tvsch
+
+#TODO error handling when at failed
