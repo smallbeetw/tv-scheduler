@@ -1,0 +1,21 @@
+                       ===========================================
+                       TV Program Scheduler/Recorder Scripts Suite
+                       ===========================================
+
+======
+Setup
+======
+
+# systemctl enable atd
+
+=============
+Run Scheduler
+=============
+# ./tv-sch.sh 2021-05-21 21:00 95m 65 音速小子
+# ./tv-sch-D.sh 12:00 60m 10 中視午間新聞
+
+==============
+Check Schedule
+==============
+atq
+at -c 5		# show the detail of job 5
