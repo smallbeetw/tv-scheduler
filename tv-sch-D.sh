@@ -79,6 +79,8 @@ conflict()
 	# TODO: careful between two date, last date, next date
 }
 
+mkdir -p $TVSCH_PATH
+
 # the recording time should not be a past time
 past
 

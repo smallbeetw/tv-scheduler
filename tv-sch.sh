@@ -87,6 +87,8 @@ conflict()
 
 help
 
+mkdir -p $TVSCH_PATH
+
 # the recording time should not be a past time
 past
 
