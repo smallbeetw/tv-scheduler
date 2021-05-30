@@ -15,6 +15,9 @@
 
 CHANNEL=$1
 MINUTES_m=$2
+NAME=$3
+
+TVSCH_BIN_PATH=/root
 
 # checking conflict for skip?
 
@@ -57,6 +60,12 @@ sleep $MINUTES_m
 echo -e "S" > /dev/ttyUSB0
 sleep 10s
 echo -e "S" > /dev/ttyUSB0
+sleep 10s
+echo -e "S" > /dev/ttyUSB0
+
+# post process
+# $TVSCH_BIN_PATH/tv-rec-post.sh $NAME $MINUTES_m $CHANNEL
+
 # TODO: remove tvsch file? 
 # at now+60min -f /root/tv-record-stop.sh
 # at 19:00 -f /root/ctv-news.sh
