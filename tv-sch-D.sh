@@ -55,9 +55,10 @@ conflict()
 	do
 		BASENAME=$(basename $filename)
 		IFS='_' read -a array <<< $BASENAME
+		B_MINUTES=${array[2]/m/}
 		B_START_TIME=${array[0]}" "${array[1]}
 		B_START_EPOCH=$(date -d "$B_START_TIME" +%s)
-		B_END_TIME=$(date -d "$B_START_TIME $MINUTES minutes" +'%Y-%m-%d %H:%M')
+		B_END_TIME=$(date -d "$B_START_TIME $B_MINUTES minutes" +'%Y-%m-%d %H:%M')
 		B_END_EPOCH=$(date -d "$B_END_TIME" +%s)
 
 		# echo $BASENAME
