@@ -100,7 +100,7 @@ echo "mv $TVSCH_PATH/$DATE"_"$TIME"_"$MINUTESm"_"$CHANNEL"_"$NAME"[D]".tvsch $TV
 echo "$TVSCH_BIN_PATH/tv-rec-post-D.sh $TIME $MINUTESm $CHANNEL $NAME" >> $TVSCH_PATH/$DATE"_"$TIME"_"$MINUTESm"_"$CHANNEL"_"$NAME"[D]".tvsch
 
 # Set flag to [D]one after post recording job is done. It should includes moving video file to network storage
-echo "mv $TVSCH_PATH/$DATE"_"$TIME"_"$MINUTESm"_"$CHANNEL"_"$NAME"[D]".tvschF $TVSCH_PATH/$DATE"_"$TIME"_"$MINUTESm"_"$CHANNEL"_"$NAME"[D]".tvschD" >> $TVSCH_PATH/$DATE"_"$TIME"_"$MINUTESm"_"$CHANNEL"_"$NAME"[D]".tvsch
+# echo "mv $TVSCH_PATH/$DATE"_"$TIME"_"$MINUTESm"_"$CHANNEL"_"$NAME"[D]".tvschF $TVSCH_PATH/$DATE"_"$TIME"_"$MINUTESm"_"$CHANNEL"_"$NAME"[D]".tvschD" >> $TVSCH_PATH/$DATE"_"$TIME"_"$MINUTESm"_"$CHANNEL"_"$NAME"[D]".tvsch
 
 # call at command to schedule the recording
 at $TIME $DATE -f $TVSCH_PATH/$DATE"_"$TIME"_"$MINUTESm"_"$CHANNEL"_"$NAME"[D]".tvsch
