@@ -22,3 +22,5 @@ NAME=$4
 
 # schedule next time
 $TVSCH_BIN_PATH/tv-sch-D.sh $TIME $MINUTESm $CHANNEL $NAME
+
+$TVSCH_BIN_PATH/tv-rec-post.sh
