@@ -41,6 +41,7 @@ struct ir_entry {
 };
 
 static struct ir_entry ir_map[] = {
+  /* KBRO box */
   {'0', KBRO, -1, kbro_zero, 200},
   {'1', KBRO, -1, kbro_one, 200},
   {'2', KBRO, -1, kbro_two, 200},
@@ -52,9 +53,14 @@ static struct ir_entry ir_map[] = {
   {'8', KBRO, -1, kbro_eight, 200},
   {'9', KBRO, -1, kbro_nine, 200},
   {'b', KBRO, -1, kbro_back, 200},
+  /* Avermedia box */
   {'R', NEC, 0xBFC0C03F, 0, 200},  // Record 
   {'E', NEC, 0xBFC0B04F, 0, 200},  // ESC
   {'S', NEC, 0xBFC050AF, 0, 200},  // Stop
+  {'M', NEC, 0xBFC0F807, 0, 200},  // MENU
+  {'F', NEC, 0xBFC0AA55, 0, 200},  // F1
+  {'O', NEC, 0xBFC0E01F, 0, 200},  // OK
+  {'P', NEC, 0xBFC028D7, 0, 200},  // Power
   {'-', -1, -1, 0, 0},            // MAP_END
 };
 
@@ -71,6 +77,10 @@ void loop() {
   while (Serial.available()) {
     int i=0;
     input_byte = Serial.read();
+    if (input_byte == '?') {
+      Serial.println("Avermedia");
+      return;
+    }  
     while (ir_map[i].input_byte != '-') {
       if (input_byte == ir_map[i].input_byte) {
         digitalWrite(led_pin, HIGH);
