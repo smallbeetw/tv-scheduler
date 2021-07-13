@@ -13,13 +13,16 @@
 # You should have received a copy of the GNU General Public License along
 # with this program; if not, see <http://www.gnu.org/licenses/>.
 
+source tv-scheduler.conf
+source tv-rec-post-utils.sh
+
 CHANNEL=$1
 MINUTES_m=$2
 NAME=$3
 
-TVSCH_BIN_PATH=/root
-
-# checking conflict for skip?
+# Set baud rate of Arduino
+setBaudRate
+sleep 3
 
 # Escape the ISP's CV
 echo -e "b" > /dev/ttyUSB0
@@ -53,7 +56,7 @@ sleep 10s
 # Start to Record
 echo -e "R" > /dev/ttyUSB0
 
-# Wait until program finished
+# Wait until TV program finished
 sleep $MINUTES_m
 
 # Stop recording
@@ -62,10 +65,3 @@ sleep 10s
 echo -e "S" > /dev/ttyUSB0
 sleep 10s
 echo -e "S" > /dev/ttyUSB0
-
-# post process
-# $TVSCH_BIN_PATH/tv-rec-post.sh $NAME $MINUTES_m $CHANNEL
-
-# TODO: remove tvsch file? 
-# at now+60min -f /root/tv-record-stop.sh
-# at 19:00 -f /root/ctv-news.sh
