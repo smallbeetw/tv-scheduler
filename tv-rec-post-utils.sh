@@ -51,9 +51,6 @@ checkSlot()
 		START_TIME=${array[0]}" "${array[1]}
 		START_EPOCH=$(date -d "$START_TIME" +%s)
 		NOW_EPOCH=$(date +%s)
-		#if [ $START_EPOCH -gt $NOW_EPOCH ]; then
-		#	SLOT_EPOCH=$((${START_EPOCH}-${NOW_EPOCH}))
-		#fi
 		# The next program is maybe recording, the start epoch just passed a bit
 		# So we take the absolute value.
 		SLOT_EPOCH=$((${START_EPOCH}-${NOW_EPOCH}))
@@ -62,10 +59,10 @@ checkSlot()
 			MIN_SLOT_EPOCH=$SLOT_EPOCH
 		fi
 	done
-	# if slot minutes is 0, means no next program in schedule, we can just copy any thing
-	# if slot minutes is smaller than target minutes, then stop copy this time
+	# if minimum slot epoch is 0, means no next program in schedule, we can just copy any thing
+	# if slot minutes is smaller than target minutes, then stop copy in this time
 	SLOT_MINUTES=$((${MIN_SLOT_EPOCH}/60))
-	if [ ! $SLOT_MINUTES -eq 0 ] && [ $SLOT_MINUTES -lt $TARGET_MINUTES ]; then
+	if [ ! $MIN_SLOT_EPOCH -eq 0 ] && [ $SLOT_MINUTES -lt $TARGET_MINUTES ]; then
 		exit 0
 	fi
 	echo "SLOT_MINUTES: " $SLOT_MINUTES
