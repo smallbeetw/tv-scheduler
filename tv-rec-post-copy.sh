@@ -62,6 +62,17 @@ copy()
 	mv $TARGET_TVSCHC ${TARGET_TVSCHC/.tvschC/.tvschD} 
 }
 
+delMatchMP4()
+{
+	SIZE_SOURCE_MP4=$(stat -c%s $MATCH_MP4_FILENAME)
+	SIZE_DEST_FILE=$(stat -c%s $DEST_FILE)
+	if [ $SIZE_SOURCE_MP4 -eq $SIZE_DEST_FILE ]; then
+		rm $MATCH_MP4_FILENAME
+		sync
+		echo "Removed source MP4 file: " $MATCH_MP4_FILENAME
+	fi
+}
+
 # Find out the copy target (shortest non-copy program)
 findTarget
 
@@ -71,6 +82,9 @@ matchMP4
 
 # copy match mp4 file to rasp
 copy
+
+# delete source MP4 to save space of thumb
+delMatchMP4
 	
 # call self script again, until no enough slot or no any program can copy
 $TVSCH_BIN_PATH/tv-rec-post-copy.sh
