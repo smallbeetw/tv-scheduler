@@ -89,6 +89,14 @@ dump()
 		cp $mp4 $DEST_FOLDER 
 		sync
 		echo "Done"
+		MP4_BASENAME=$(basename $mp4)
+		SIZE_SOURCE_MP4=$(stat -c%s $mp4)
+		SIZE_DEST_FILE=$(stat -c%s $DEST_FOLDER/$MP4_BASENAME)
+		if [ $SIZE_SOURCE_MP4 -eq $SIZE_DEST_FILE ]; then
+			rm $mp4
+			sync
+			echo "Removed source MP4 file: " $mp4
+		fi
 	done
 	# change owner to nobody:nobody for the delete function of Kodi 
 	chown nobody:nobody -R $DEST_FOLDER
