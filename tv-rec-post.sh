@@ -119,6 +119,6 @@ AverMediaPower
 AverMediaFixDisk
 
 # restart nfs-server because USB EMI
-/usr/bin/systemctl restart nfs-server
+# /usr/bin/systemctl restart nfs-server
 
 # TODO: remove tvsch file?
