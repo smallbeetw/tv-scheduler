@@ -82,6 +82,8 @@ conflict()
 
 mkdir -p $TVSCH_PATH
 
+# TODO: check input time should not zero
+
 # the recording time should not be a past time
 past
 
