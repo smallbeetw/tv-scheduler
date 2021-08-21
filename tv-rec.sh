@@ -32,7 +32,7 @@ sleep 1s
 echo -e "b" > /dev/ttyUSB0
 sleep 1s
 echo -e "b" > /dev/ttyUSB0
-sleep 1s
+sleep 10s
 
 # Switch channel
 echo -e $CHANNEL > /dev/ttyUSB0
@@ -52,6 +52,8 @@ sleep 3s
 # If it's recording, stop it
 echo -e "S" > /dev/ttyUSB0
 sleep 10s
+echo -e "S" > /dev/ttyUSB0
+sleep 10s
 
 # Start to Record
 echo -e "R" > /dev/ttyUSB0
@@ -65,3 +67,4 @@ sleep 10s
 echo -e "S" > /dev/ttyUSB0
 sleep 10s
 echo -e "S" > /dev/ttyUSB0
+sleep 10s
