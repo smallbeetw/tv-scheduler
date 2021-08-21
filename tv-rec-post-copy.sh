@@ -52,7 +52,12 @@ copy()
 	mkdir -p $DEST_FOLDER
 	# copy mp4 to destination file
 	cp $MATCH_MP4_FILENAME $DEST_FILE
-	sync 
+	sync
+	# change owner to nobody:nobody for the delete function of Kodi
+	chown nobody:nobody -R $DEST_FOLDER
+
+	# TODO: check sum and remove/keep target
+
 	# change .tvschC to .tvschD. [D] means Done. 
 	mv $TARGET_TVSCHC ${TARGET_TVSCHC/.tvschC/.tvschD} 
 }
