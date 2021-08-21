@@ -14,6 +14,7 @@
 # with this program; if not, see <http://www.gnu.org/licenses/>.
 
 source tv-scheduler.conf
+source tv-sch-utils.sh
 
 # use today as DATE first
 DATE=$(date +'%Y-%m-%d')
@@ -35,51 +36,6 @@ past()
 	fi
 }
 
-conflict()
-{
-	CONFLICT=false
-	MINUTES=${MINUTESm/m/}
-	A_START_EPOCH=$START_EPOCH
-	A_END_TIME=$(date -d "$DATE $TIME $MINUTES minutes" +'%Y-%m-%d %H:%M')
-	A_END_EPOCH=$(date -d "$A_END_TIME" +%s)
-
-	# echo $MINUTES
-	# echo "A_START_TIME:" $START_TIME
-	# echo "A_START_EPOCH:" $A_START_EPOCH
-	# echo "A_END_TIME:" $A_END_TIME
-	# echo "A_END_EPOCH:" $A_END_EPOCH
-
-	# compare time of tv scheduled files
-	tvschfilenames=`ls $TVSCH_PATH/*.tvsch`
-	for filename in $tvschfilenames
-	do
-		BASENAME=$(basename $filename)
-		IFS='_' read -a array <<< $BASENAME
-		B_MINUTES=${array[2]/m/}
-		B_START_TIME=${array[0]}" "${array[1]}
-		B_START_EPOCH=$(date -d "$B_START_TIME" +%s)
-		B_END_TIME=$(date -d "$B_START_TIME $B_MINUTES minutes" +'%Y-%m-%d %H:%M')
-		B_END_EPOCH=$(date -d "$B_END_TIME" +%s)
-
-		# echo $BASENAME
-		# echo "B_START_TIME: "$B_START_TIME
-		# echo "B_START_EPOCH:" $B_START_EPOCH
-		# echo "B_END_TIME:" $B_END_TIME
-		# echo "B_END_EPOCH:" $B_END_EPOCH
-
-		if [ $A_START_EPOCH -le $B_END_EPOCH ] && [ $B_START_EPOCH -le $A_END_EPOCH ]; then
-			echo $BASENAME "conflict!!!!!!"
-			CONFLICT=true
-		fi
-	done
-
-	if [ $CONFLICT = true ]; then
-		exit 0
-	fi
-
-	# TODO: careful between two date, last date, next date
-}
-
 mkdir -p $TVSCH_PATH
 
 # TODO: check input time should not zero
@@ -87,22 +43,36 @@ mkdir -p $TVSCH_PATH
 # the recording time should not be a past time
 past
 
-# the recording time should not conflict with any scheduled program 
-# conflict
+# The recording time should not conflict with any scheduled program
+# This conflict checking function call should not be move to after
+# tvsch file be generated, otherwise conflict will find this program self.
+conflict
+
+TVSCH_FILE=$TVSCH_PATH/$DATE"_"$TIME"_"$MINUTESm"_"$CHANNEL"_"$NAME"[D]".tvsch
+
+# The following logic is producing the content of tvsch file
+
+# will checking .tvschB [B]lock tag in pre-record script
+echo "$TVSCH_BIN_PATH/tv-rec-pre-D.sh $DATE $TIME $MINUTESm $CHANNEL $NAME" > $TVSCH_FILE
+echo "if [ \$? -eq 1 ]; then exit 0; fi" >> $TVSCH_FILE
 
 # generate tvsch file, request tv recording script
 # The [D] after name means Daily
-echo "$TVSCH_BIN_PATH/tv-rec.sh $CHANNEL $MINUTESm $NAME" > $TVSCH_PATH/$DATE"_"$TIME"_"$MINUTESm"_"$CHANNEL"_"$NAME"[D]".tvsch
+echo "$TVSCH_BIN_PATH/tv-rec.sh $CHANNEL $MINUTESm $NAME" >> $TVSCH_FILE
 
 # Add flag to file extension: [F]inish, [D]elete, [B]lock
 # Set flag to [F]inish after recording job is finished
-echo "mv $TVSCH_PATH/$DATE"_"$TIME"_"$MINUTESm"_"$CHANNEL"_"$NAME"[D]".tvsch $TVSCH_PATH/$DATE"_"$TIME"_"$MINUTESm"_"$CHANNEL"_"$NAME"[D]".tvschF" >> $TVSCH_PATH/$DATE"_"$TIME"_"$MINUTESm"_"$CHANNEL"_"$NAME"[D]".tvsch
+echo "mv $TVSCH_PATH/$DATE"_"$TIME"_"$MINUTESm"_"$CHANNEL"_"$NAME"[D]".tvsch $TVSCH_PATH/$DATE"_"$TIME"_"$MINUTESm"_"$CHANNEL"_"$NAME"[D]".tvschF" >> $TVSCH_FILE
 
 # request post recording script
-echo "$TVSCH_BIN_PATH/tv-rec-post-D.sh $TIME $MINUTESm $CHANNEL $NAME" >> $TVSCH_PATH/$DATE"_"$TIME"_"$MINUTESm"_"$CHANNEL"_"$NAME"[D]".tvsch
+echo "$TVSCH_BIN_PATH/tv-rec-post-D.sh $TIME $MINUTESm $CHANNEL $NAME" >> $TVSCH_FILE
 
-# Set flag to [D]one after post recording job is done. It should includes moving video file to network storage
-# echo "mv $TVSCH_PATH/$DATE"_"$TIME"_"$MINUTESm"_"$CHANNEL"_"$NAME"[D]".tvschF $TVSCH_PATH/$DATE"_"$TIME"_"$MINUTESm"_"$CHANNEL"_"$NAME"[D]".tvschD" >> $TVSCH_PATH/$DATE"_"$TIME"_"$MINUTESm"_"$CHANNEL"_"$NAME"[D]".tvsch
+# if this daily schedule conflicts with other TV program, then set [B]lock tag on tvsch file
+if [ $CONFLICT == true ]; then
+	mv $TVSCH_FILE $TVSCH_FILE"B"
+	TVSCH_FILE=$TVSCH_FILE"B"
+	# we still schedule blocked tvsch for next cycle
+fi
 
 # call at command to schedule the recording
-at $TIME $DATE -f $TVSCH_PATH/$DATE"_"$TIME"_"$MINUTESm"_"$CHANNEL"_"$NAME"[D]".tvsch
+at $TIME $DATE -f $TVSCH_FILE
