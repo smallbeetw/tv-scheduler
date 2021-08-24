@@ -24,9 +24,6 @@ NAME=$5
 START_TIME=$DATE" "$TIME
 START_EPOCH=$(date -d "$START_TIME" +%s)
 
-# TVSCH_PATH=/root/tvschs
-# TVSCH_BIN_PATH=/root/tv-rec
-
 help()
 {
 	echo "tv-sch.sh DATE TIME MINUTES CHANNEL NAME"
@@ -97,21 +94,20 @@ past
 # the recording time should not conflict with any scheduled program 
 conflict
 
+TVSCH_FILE=$TVSCH_PATH/$DATE"_"$TIME"_"$MINUTESm"_"$CHANNEL"_"$NAME.tvsch
+
 # generate tvsch file, request tv recording script
-echo "$TVSCH_BIN_PATH/tv-rec.sh $CHANNEL $MINUTESm $NAME" > $TVSCH_PATH/$DATE"_"$TIME"_"$MINUTESm"_"$CHANNEL"_"$NAME.tvsch
+echo "$TVSCH_BIN_PATH/tv-rec.sh $CHANNEL $MINUTESm $NAME" > $TVSCH_FILE
 
 # Add flag to file extension: [F]inish, [D]one, [B]lock
 # Set flag to [F]inish after recording job is finished
-echo "mv $TVSCH_PATH/$DATE"_"$TIME"_"$MINUTESm"_"$CHANNEL"_"$NAME.tvsch $TVSCH_PATH/$DATE"_"$TIME"_"$MINUTESm"_"$CHANNEL"_"$NAME.tvschF" >> $TVSCH_PATH/$DATE"_"$TIME"_"$MINUTESm"_"$CHANNEL"_"$NAME.tvsch
+echo "mv $TVSCH_PATH/$DATE"_"$TIME"_"$MINUTESm"_"$CHANNEL"_"$NAME.tvsch $TVSCH_PATH/$DATE"_"$TIME"_"$MINUTESm"_"$CHANNEL"_"$NAME.tvschF" >> $TVSCH_FILE
 
 # request post recording script
-# echo "$TVSCH_BIN_PATH/tv-rec-post.sh $NAME $MINUTESm $CHANNEL" >> $TVSCH_PATH/$DATE"_"$TIME"_"$MINUTESm"_"$CHANNEL"_"$NAME.tvsch
-echo "$TVSCH_BIN_PATH/tv-rec-post.sh" >> $TVSCH_PATH/$DATE"_"$TIME"_"$MINUTESm"_"$CHANNEL"_"$NAME.tvsch
-
-# Set flag to [D]one after post recording job is done. It should includes moving video file to network storage
-# echo "mv $TVSCH_PATH/$DATE"_"$TIME"_"$MINUTESm"_"$CHANNEL"_"$NAME.tvschF $TVSCH_PATH/$DATE"_"$TIME"_"$MINUTESm"_"$CHANNEL"_"$NAME.tvschD" >> $TVSCH_PATH/$DATE"_"$TIME"_"$MINUTESm"_"$CHANNEL"_"$NAME.tvsch
+# post-copy scxript will Set flag to [D]one after post recording job is done. It should includes moving video file to raspberry pi storage
+echo "$TVSCH_BIN_PATH/tv-rec-post.sh" >> $TVSCH_FILE
 
 # call at command to schedule the recording
-at $TIME $DATE -f $TVSCH_PATH/$DATE"_"$TIME"_"$MINUTESm"_"$CHANNEL"_"$NAME.tvsch
+at $TIME $DATE -f $TVSCH_FILE
 
 #TODO error handling when at failed
