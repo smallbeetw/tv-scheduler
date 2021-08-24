@@ -40,11 +40,10 @@ copy()
 		return 0
 	fi
  
-#	PG_TYPE="Movies"
 	PG_TYPE="Series"
-#	if [[ $TARGET_NAME == *"[D]"* ]]; then
-#	  PG_TYPE="Series"
-#	fi 
+	if [[ $TARGET_NAME == *"[M]"* ]]; then
+	  PG_TYPE="Movies"
+	fi
 	DEST_FOLDER=$TVREC_PATH/$PG_TYPE/$TARGET_NAME
 	DEST_FILE=$DEST_FOLDER/$MATCH_MP4_NAME"_"$TARGET_NAME.mp4
 	echo $DEST_FOLDER
