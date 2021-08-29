@@ -63,8 +63,6 @@ sleep $MINUTES_m
 
 # Stop recording
 echo -e "S" > /dev/ttyUSB0
-sleep 10s
+sleep 20s
 echo -e "S" > /dev/ttyUSB0
-sleep 10s
-echo -e "S" > /dev/ttyUSB0
-sleep 10s
+sleep 20s
