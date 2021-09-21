@@ -56,8 +56,6 @@ copy()
 	# change owner to nobody:nobody for the delete function of Kodi
 	chown nobody:nobody -R $DEST_FOLDER
 
-	# TODO: check sum and remove/keep target
-
 	# change .tvschC to .tvschD. [D] means Done. 
 	mv $TARGET_TVSCHC ${TARGET_TVSCHC/.tvschC/.tvschD} 
 }
@@ -66,11 +64,27 @@ delMatchMP4()
 {
 	SIZE_SOURCE_MP4=$(stat -c%s $MATCH_MP4_FILENAME)
 	SIZE_DEST_FILE=$(stat -c%s $DEST_FILE)
-	if [ $SIZE_SOURCE_MP4 -eq $SIZE_DEST_FILE ]; then
+	# use ffprobe check the format of DEST_FILE
+	if command -v ffprobe &> /dev/null; then
+		FFPROBE_ERR=$(ffprobe -v error $DEST_FILE 2>&1)
+		if [ ! -z "$FFPROBE_ERR" ]; then
+			echo "FFPROBE_ERR: " $FFPROBE_ERR
+		fi
+	fi
+	# if size match and also no ffprobe error, then we can remove the source mp4
+	if [ $SIZE_SOURCE_MP4 -eq $SIZE_DEST_FILE ] && [ -z "$FFPROBE_ERR" ]; then
 		rm $MATCH_MP4_FILENAME
 		sync
 		echo "Removed source MP4 file: " $MATCH_MP4_FILENAME
 	fi
+}
+
+delOutdatedMP4()
+{
+	# parsing the [K?] tag to find out how many mp4 files we want to keep
+	# in the dest folder in storage
+	echo $DEST_FOLDER
+	echo "TARGET_NAME: " $TARGET_NAME
 }
 
 # Find out the copy target (shortest non-copy program)

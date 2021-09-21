@@ -65,7 +65,7 @@ switchUSB2Rasp()
 	# pin 3 : D+ D- data pin	be controlled by a low-level trigger Relay
 	# pin 4 : power/ground pin	be controlled by a low-level trigger Relay
 	# pin 17 : second level power/ground pin control, be controlled by a MOSFET
-	gpioset gpiochip0 4=0; sleep 1; gpioset gpiochip0 17=1; sleep 1; gpioset gpiochip0 3=0
+	 gpioset gpiochip0 17=0; sleep 1; gpioset gpiochip0 4=0; sleep 1; gpioset gpiochip0 17=1; sleep 1; gpioset gpiochip0 3=0
 	echo "switched USB to Raspberry pi"
 }
 
@@ -92,10 +92,10 @@ checkSlot
 
 detachAvermedia
 
-switchUSB2Rasp
-sleep 5
-
 AverMediaPower
+sleep 20
+
+switchUSB2Rasp
 sleep 5
 
 /bin/mount /mnt/avermedia
