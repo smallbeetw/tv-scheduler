@@ -32,10 +32,14 @@ matchAtqJob()
 	IFS=$'\t' read -a array <<< $JOB
 	JOB_NUMBER=${array[0]}
 	echo "Job Number: " $JOB_NUMBER
-	# confirm that the tvsch file name is in the job 
-	TVSCH_IN_JOB=$(at -c $JOB_NUMBER | grep $tvsch)
-	echo "TVSCH_IN_JOB: " $TVSCH_IN_JOB
-	if [ ! -z "$TVSCH_IN_JOB" ]; then
+	# confirm that the program name is in the job
+ 	# remove .tvsch and all tags in program name
+	NAME=${BASENAME/\[*\]/}
+	NAME=$(echo "$NAME" | cut -f 1 -d '.')
+	echo $NAME
+	NAME_IN_JOB=$(at -c $JOB_NUMBER | grep $NAME)
+	echo "NAME_IN_JOB: " $NAME_IN_JOB
+	if [ ! -z "$NAME_IN_JOB" ]; then
 		atrm $JOB_NUMBER
 		echo "Removed matched atq job: " $JOB
 		rm $tvsch

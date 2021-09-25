@@ -3,8 +3,6 @@
 source tv-scheduler.conf
 source tv-rec-post-utils.sh
 
-AVERMEDIA_TTY=/dev/ttyUSB0
-
 detachAvermedia()
 {
 	# Escape last state of recorder
@@ -33,27 +31,6 @@ detachAvermedia()
 	sleep 3s
 	echo -e "E" > $AVERMEDIA_TTY
 	sleep 3s
-}
-
-AverMediaPower()
-{
-	# power off (standby) AverMedia
-	echo -e "P" > $AVERMEDIA_TTY
-	sleep 10s
-}
-
-AverMediaFixDisk()
-{
-	# Sometimes that Avermedia E130 requests user to push _OK_ button
-	# to fix disk because it found broken file on disk. So we push
-	# OK button a couple of times to trigger the fixing after E130 be
-	# powered on.
-	echo -e "O" > $AVERMEDIA_TTY
-	sleep 15s
-	echo -e "O" > $AVERMEDIA_TTY
-	sleep 15s
-	echo -e "O" > $AVERMEDIA_TTY
-	sleep 5s
 }
 
 # Raspberry Pi be connected to the normal open side of Relay

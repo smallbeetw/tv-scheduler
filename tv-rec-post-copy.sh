@@ -11,6 +11,7 @@ matchMP4()
 	mp4s=`ls $AVER_PATH/*.mp4`
 	for mp4 in $mp4s
 	do
+		echo $mp4
 		BASENAME=$(basename $mp4)
 		filename=$(echo "$BASENAME" | cut -f 1 -d '.')
 		IFS='-' read -a array <<< $filename
@@ -35,7 +36,7 @@ copy()
 	TARGET_TVSCHC=${TARGET_TVSCHF/.tvschF/.tvschC} 
 	mv $TARGET_TVSCHF $TARGET_TVSCHC 
 
-	# run the next program if we did not find match mp4 file by time
+	# run the next program if we did not find match mp4 file by time TODO: fix check empty string
 	if [ -z "$MATCH_MP4_FILENAME" ]; then
 		return 0
 	fi

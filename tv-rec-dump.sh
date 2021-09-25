@@ -114,10 +114,10 @@ dump()
 
 detachAvermedia
 
-switchUSB2Rasp
+AverMediaPower
 sleep 5
 
-AverMediaPower
+switchUSB2Rasp
 sleep 5
 
 /bin/mount /mnt/avermedia
