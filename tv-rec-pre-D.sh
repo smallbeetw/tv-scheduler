@@ -9,7 +9,7 @@ CHANNEL=$4
 NAME=$5
 
 # check if this tvsch be marked as [B]lock
-TVSCHB_FILENAME=$TVSCH_PATH/$DATE"_"$TIME"_"$MINUTESm"_"$CHANNEL"_"$NAME"[D]".tvschB
+TVSCHB_FILENAME=$TVSCH_PATH/$DATE"_"$TIME"_"$MINUTESm"_"$CHANNEL"_"$NAME.tvschB
 if [ -f $TVSCHB_FILENAME ]; then
 	# we still schedule next cycle, but return error
 	echo $TVSCHB_FILENAME "be blocked."

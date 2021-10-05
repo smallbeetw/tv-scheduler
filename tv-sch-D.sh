@@ -39,7 +39,7 @@ past()
 set_Dtag()
 {
 	if [[ $NAME != *"[D"* ]]; then
-		Dtag="[D]"
+		NAME=$NAME"[D]"
 	fi
 }
 
@@ -55,9 +55,10 @@ past
 # tvsch file be generated, otherwise conflict will find this program self.
 conflict
 
+# set D tag to NAME for indicate this is a daily recording
 set_Dtag
 
-TVSCH_FILE=$TVSCH_PATH/$DATE"_"$TIME"_"$MINUTESm"_"$CHANNEL"_"$NAME$Dtag.tvsch
+TVSCH_FILE=$TVSCH_PATH/$DATE"_"$TIME"_"$MINUTESm"_"$CHANNEL"_"$NAME.tvsch
 
 # The following logic is producing the content of tvsch file
 
@@ -71,7 +72,7 @@ echo "$TVSCH_BIN_PATH/tv-rec.sh $CHANNEL $MINUTESm $NAME" >> $TVSCH_FILE
 
 # Add flag to file extension: [F]inish, [D]elete, [B]lock
 # Set flag to [F]inish after recording job is finished
-echo "mv $TVSCH_PATH/$DATE"_"$TIME"_"$MINUTESm"_"$CHANNEL"_"$NAME$Dtag.tvsch $TVSCH_PATH/$DATE"_"$TIME"_"$MINUTESm"_"$CHANNEL"_"$NAME$Dtag.tvschF" >> $TVSCH_FILE
+echo "mv $TVSCH_PATH/$DATE"_"$TIME"_"$MINUTESm"_"$CHANNEL"_"$NAME.tvsch $TVSCH_PATH/$DATE"_"$TIME"_"$MINUTESm"_"$CHANNEL"_"$NAME.tvschF" >> $TVSCH_FILE
 
 # request post recording script
 echo "$TVSCH_BIN_PATH/tv-rec-post-D.sh $TIME $MINUTESm $CHANNEL $NAME" >> $TVSCH_FILE
