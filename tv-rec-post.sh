@@ -92,6 +92,7 @@ setBaudRate
 sleep 3
 
 AverMediaPower
+sleep 10
 
 AverMediaFixDisk
 

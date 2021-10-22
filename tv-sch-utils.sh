@@ -41,12 +41,12 @@ conflict()
 		  B_PRIORITY=${B_PRIORITY%]*}
 		fi 
 
-		echo $BASENAME
+		# echo $BASENAME
 		# echo "B_START_TIME: "$B_START_TIME
 		# echo "B_START_EPOCH:" $B_START_EPOCH
 		# echo "B_END_TIME:" $B_END_TIME
 		# echo "B_END_EPOCH:" $B_END_EPOCH
-		echo "B_PRIORITY: " $B_PRIORITY
+		# echo "B_PRIORITY: " $B_PRIORITY
 
 		if [ $A_START_EPOCH -le $B_END_EPOCH ] && [ $B_START_EPOCH -le $A_END_EPOCH ]; then
 			echo $BASENAME "conflict!!!!!!"
