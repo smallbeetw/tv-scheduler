@@ -33,35 +33,6 @@ detachAvermedia()
 	sleep 3s
 }
 
-# Raspberry Pi be connected to the normal open side of Relay
-# AverMedia ER130 be conntected to the normal close side of Relay
-# And this is a Low level trigger Relay
-switchUSB2Rasp()
-{
-	# Attach logic from USB: Power pin first, then Data pin
-	# pin 3 : D+ D- data pin	be controlled by a low-level trigger Relay
-	# pin 4 : power/ground pin	be controlled by a low-level trigger Relay
-	# pin 17 : second level power/ground pin control, be controlled by a MOSFET
-	 gpioset gpiochip0 17=0; sleep 1; gpioset gpiochip0 4=0; sleep 1; gpioset gpiochip0 17=1; sleep 1; gpioset gpiochip0 3=0
-	echo "switched USB to Raspberry pi"
-}
-
-# A MOSFET be used as the second level controller of power pin. It's to control
-# the timing of enabling the power when attaching to ER130. The VBUS? power of
-# thumb disk must be turn-off at least 0.5-1 second before the thumb be attached
-# on ER130 or another machine. Otherwise that the thumb can not be initial by ER130
-# or anyother machine. Without a second-level power control (MOSFET here), only
-# one Relay can not fulfill this requirement.
-switchUSB2AverMedia()
-{
-	# Dttach logic from USB: Data pin first, then Power pin
-	# pin 3 : D+ D- data pin	be controlled by a low-level trigger Relay
-	# pin 4 : power/ground pin	be controlled by a low-level trigger Relay
-	# pin 17 : second level power/ground pin control, be controlled by a MOSFET
-	gpioset gpiochip0 3=1; sleep 1; gpioset gpiochip0 17=0; sleep 1; gpioset gpiochip0 4=1; sleep 1; gpioset gpiochip0 17=1
-	echo "switched USB to AverMedia"
-}
-
 # Find out the copy target (shortest non-copy program)
 findTarget
 
