@@ -38,8 +38,6 @@ findTarget
 
 checkSlot
 
-detachAvermedia
-
 AverMediaPower
 sleep 20
 

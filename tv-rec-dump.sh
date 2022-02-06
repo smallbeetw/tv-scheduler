@@ -78,8 +78,6 @@ dump()
 # script user should make sure that the time slot is enough for dumping all
 # mp4 files from /mnt/avermedia to /mnt/tvrec
 
-detachAvermedia
-
 AverMediaPower
 sleep 20
 
