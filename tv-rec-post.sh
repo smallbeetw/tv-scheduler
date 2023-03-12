@@ -33,39 +33,80 @@ detachAvermedia()
 	sleep 3s
 }
 
-# Find out the copy target (shortest non-copy program)
-findTarget
+postRoutine()
+{
+	# Find out the copy target (shortest non-copy program)
+	findTarget
 
-checkSlot
+	checkSlot
 
-AverMediaPower
-sleep 20
+	AverMediaPower
+	sleep 20
 
-switchUSB2Rasp
-sleep 5
+	switchUSB2Rasp
+	sleep 5
 
-/bin/mount /mnt/avermedia
-sleep 5
+	/bin/mount /mnt/avermedia
+	sleep 5
 
-$TVSCH_BIN_PATH/tv-rec-post-copy.sh
-sleep 5
+	$TVSCH_BIN_PATH/tv-rec-post-copy.sh
+	sleep 5
 
-/bin/umount /mnt/avermedia
-sleep 5
+	/bin/umount /mnt/avermedia
+	sleep 5
 
-switchUSB2AverMedia
-sleep 10
+	switchUSB2AverMedia
+	sleep 10
 
-# /bin/stty -F /dev/ttyUSB0 115200 min 100 time 2 -icrnl -imaxbel -opost -onlcr -isig -icanon -echo
-setBaudRate
-sleep 3
+	# /bin/stty -F /dev/ttyUSB0 115200 min 100 time 2 -icrnl -imaxbel -opost -onlcr -isig -icanon -echo
+	setBaudRate
+	sleep 3
 
-AverMediaPower
-sleep 10
+	AverMediaPower
+	sleep 10
 
-AverMediaFixDisk
+	AverMediaFixDisk
 
 # restart nfs-server because USB EMI
 # /usr/bin/systemctl restart nfs-server
+}
+
+postRoutineSecondRound()
+{
+	# If we found *.tvrecC means that a program is not copied success
+	# Sometimes it's driver or filesystem problem, mv it back to *.tvrecF state and try again
+	tvschCs=`ls $TVSCH_PATH/*.tvschC`
+	for tvschC in $tvschCs
+	do
+		# .tvsch state: [F]inal -> [C]opy -> [D]one/[E]rror
+		# change .tvschC back to .tvschF then try again
+		TVSCHF=${tvschC/.tvschC/.tvschF}
+		mv $tvschC $TVSCHF
+	done
+
+	# Do copy again when *.tvschF exist
+	if [ -z "$TVSCHF" ]; then
+		return 0
+	fi
+	# Confirm that the *.tvschF file is exist, run postRoutine again
+	if [ -f "$TVSCHF" ]; then
+		echo "Launch the second around copy"
+		postRoutine
+	fi
+
+	# If we still see *.tvschC after second round, then mv *.tvschC to [E]rror state
+	tvschCs=`ls $TVSCH_PATH/*.tvschC`
+	for tvschC in $tvschCs
+	do
+		# .tvsch state: [F]inal -> [C]opy -> [D]one/[E]rror
+		# change .tvschC to to .tvschE because we already try two rounds
+		TVSCHE=${tvschC/.tvschC/.tvschE}
+		mv $tvschC $TVSCHE
+	done
+}
+
+postRoutine
+
+postRoutineSecondRound
 
 # TODO: remove tvsch file?

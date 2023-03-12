@@ -31,13 +31,15 @@ matchMP4()
 
 copy()
 {
-	# .tvsch state: [F]inal -> [C]opy -> [D]one
+	# .tvsch state: [F]inal -> [C]opy -> [D]one/[E]rror
 	# change .tvschF to .tvschC before match/copy. [C] means Copy. 
 	TARGET_TVSCHC=${TARGET_TVSCHF/.tvschF/.tvschC} 
 	mv $TARGET_TVSCHF $TARGET_TVSCHC 
 
 	# run the next program if we did not find match mp4 file by time TODO: fix check empty string
 	if [ -z "$MATCH_MP4_FILENAME" ]; then
+		# sometimes hardware/filesystem has trouble, so didn't find match file
+		# we will trigger second round in tv-rec-post.sh
 		return 0
 	fi
  
@@ -60,7 +62,8 @@ copy()
 	chown nobody:nobody -R $DEST_FOLDER
 
 	# change .tvschC to .tvschD. [D] means Done. 
-	mv $TARGET_TVSCHC ${TARGET_TVSCHC/.tvschC/.tvschD} 
+	TARGET_TVSCHD=${TARGET_TVSCHC/.tvschC/.tvschD}
+	mv $TARGET_TVSCHC $TARGET_TVSCHD
 }
 
 delMatchMP4()
@@ -153,11 +156,14 @@ matchMP4
 # copy match mp4 file to rasp
 copy
 
-# delete source MP4 to save space of thumb
-delMatchMP4
+# when we found match mp4 file and also copy it success (found *.tvschd)
+# then remove match mp4 file from thumb drive, and clean outdated mp4 file in destination folder
+if [ -n "$MATCH_MP4_FILENAME" ] && [ -n "$TARGET_TVSCHD" ]; then
+	# delete source MP4 to save space of thumb
+	delMatchMP4
+	# delete outdated mp4 files in destination folder
+	delOutdatedMP4s
+fi
 
-# delete outdated mp4 files in destination folder
-delOutdatedMP4s
-	
-# call self script again, until no enough slot or no any program can copy
+# call self script again, until no enough time slot or no any program can be copied
 $TVSCH_BIN_PATH/tv-rec-post-copy.sh
