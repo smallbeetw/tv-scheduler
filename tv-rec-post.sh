@@ -63,7 +63,7 @@ postRoutine()
 	sleep 3
 
 	AverMediaPower
-	sleep 10
+	sleep 15
 
 	AverMediaFixDisk
 
