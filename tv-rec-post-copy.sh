@@ -75,6 +75,10 @@ delMatchMP4()
 		FFPROBE_ERR=$(ffprobe -v error $DEST_FILE 2>&1)
 		if [ ! -z "$FFPROBE_ERR" ]; then
 			echo "FFPROBE_ERR: " $FFPROBE_ERR
+			# change .tvschD back to .tvschC. [C] means Copy.
+			# If this is the first round, tv-rec-post will set to [F]
+			# for running the second round copy.
+			mv $TARGET_TVSCHD $TARGET_TVSCHC
 		fi
 	fi
 	# if size match and also no ffprobe error, then we can remove the source mp4
