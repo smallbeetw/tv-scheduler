@@ -36,6 +36,12 @@ sleep 10s
 
 # Switch channel
 echo -e $CHANNEL > /dev/ttyUSB0
+sleep 10s
+
+# Turn on/off PX RC-8000 box to workaround no-sound issue
+echo -e "p" > /dev/ttyUSB0
+sleep 5s
+echo -e "p" > /dev/ttyUSB0
 sleep 5s
 
 # Escape last state of recorder
