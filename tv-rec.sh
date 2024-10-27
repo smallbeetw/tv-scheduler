@@ -20,19 +20,25 @@ CHANNEL=$1
 MINUTES_m=$2
 NAME=$3
 
+escapeKBROcv()
+{
+	# Escape the KBRO box's CV
+	echo -e "b" > /dev/ttyUSB0
+	sleep 1s
+	echo -e "b" > /dev/ttyUSB0
+	sleep 1s
+	echo -e "b" > /dev/ttyUSB0
+	sleep 1s
+	echo -e "b" > /dev/ttyUSB0
+	sleep 10s
+}
+
 # Set baud rate of Arduino
 setBaudRate
 sleep 3
 
 # Escape the ISP's CV
-echo -e "b" > /dev/ttyUSB0
-sleep 1s
-echo -e "b" > /dev/ttyUSB0
-sleep 1s
-echo -e "b" > /dev/ttyUSB0
-sleep 1s
-echo -e "b" > /dev/ttyUSB0
-sleep 10s
+# escapeKBROcv
 
 # Switch channel
 echo -e $CHANNEL > /dev/ttyUSB0
