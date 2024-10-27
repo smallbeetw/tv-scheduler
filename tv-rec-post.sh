@@ -65,7 +65,7 @@ postRoutine()
 	AverMediaPower
 	sleep 10
 
-	AverMediaFixDisk
+	# AverMediaFixDisk
 
 # restart nfs-server because USB EMI
 # /usr/bin/systemctl restart nfs-server
