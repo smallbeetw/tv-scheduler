@@ -42,17 +42,19 @@ struct ir_entry {
 
 static struct ir_entry ir_map[] = {
   /* KBRO box */
-  {'0', KBRO, -1, kbro_zero, 200},
-  {'1', KBRO, -1, kbro_one, 200},
-  {'2', KBRO, -1, kbro_two, 200},
-  {'3', KBRO, -1, kbro_three, 200},
-  {'4', KBRO, -1, kbro_four, 200},
-  {'5', KBRO, -1, kbro_five, 200},
-  {'6', KBRO, -1, kbro_six, 200},
-  {'7', KBRO, -1, kbro_seven, 200},
-  {'8', KBRO, -1, kbro_eight, 200},
-  {'9', KBRO, -1, kbro_nine, 200},
-  {'b', KBRO, -1, kbro_back, 200},
+  /*
+  {'0', KBRO, -1, kbro_zero, 400},
+  {'1', KBRO, -1, kbro_one, 400},
+  {'2', KBRO, -1, kbro_two, 400},
+  {'3', KBRO, -1, kbro_three, 400},
+  {'4', KBRO, -1, kbro_four, 400},
+  {'5', KBRO, -1, kbro_five, 400},
+  {'6', KBRO, -1, kbro_six, 400},
+  {'7', KBRO, -1, kbro_seven, 400},
+  {'8', KBRO, -1, kbro_eight, 400},
+  {'9', KBRO, -1, kbro_nine, 400},
+  {'b', KBRO, -1, kbro_back, 400},
+  */
   /* Avermedia box */
   {'R', NEC, 0xBFC0C03F, 0, 200},  // Record 
   {'E', NEC, 0xBFC0B04F, 0, 200},  // ESC
@@ -61,6 +63,18 @@ static struct ir_entry ir_map[] = {
   {'F', NEC, 0xBFC0AA55, 0, 200},  // F1
   {'O', NEC, 0xBFC0E01F, 0, 200},  // OK
   {'P', NEC, 0xBFC028D7, 0, 200},  // Power
+  /* PX RC-8000 */
+  {'p', NEC, 0x404050AF, 0, 200},  // Power
+  {'0', NEC, 0x404000FF, 0, 200},
+  {'1', NEC, 0x4040807F, 0, 200},
+  {'2', NEC, 0x404040BF, 0, 200},
+  {'3', NEC, 0x4040C03F, 0, 200},
+  {'4', NEC, 0x404020DF, 0, 200},
+  {'5', NEC, 0x4040A05F, 0, 200},
+  {'6', NEC, 0x4040609F, 0, 200},
+  {'7', NEC, 0x4040E01F, 0, 200},
+  {'8', NEC, 0x404010EF, 0, 200},
+  {'9', NEC, 0x4040906F, 0, 200},
   {'-', -1, -1, 0, 0},            // MAP_END
 };
 
@@ -69,21 +83,27 @@ IRsend irsend;
 char input_byte;
 
 void setup() {
-  pinMode(led_pin, OUTPUT);
+  //pinMode(led_pin, OUTPUT);
   Serial.begin(115200);
+// Serial.begin(9600);
+  pinMode(A0, INPUT);
 }
 
 void loop() { 
   while (Serial.available()) {
+  //  if (Serial.available() > 0) {
     int i=0;
+    int pr=0;
     input_byte = Serial.read();
     if (input_byte == '?') {
-      Serial.println("Avermedia");
+      //Serial.println("Avermedia");
+      pr = analogRead(A0);
+      Serial.println(pr);
       return;
     }  
     while (ir_map[i].input_byte != '-') {
       if (input_byte == ir_map[i].input_byte) {
-        digitalWrite(led_pin, HIGH);
+      //  digitalWrite(led_pin, HIGH);
        // Serial.println("HIGH");
         if (ir_map[i].decode_type == NEC) {
           irsend.sendNEC(ir_map[i].ir_code, 32);
@@ -95,7 +115,7 @@ void loop() {
           delay(ir_map[i].delay_ms);
         }
      //   Serial.println("LOW");
-        digitalWrite(led_pin, LOW);
+    //    digitalWrite(led_pin, LOW);
         break;
       }
       i++;
