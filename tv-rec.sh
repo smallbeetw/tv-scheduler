@@ -23,13 +23,13 @@ NAME=$3
 escapeKBROcv()
 {
 	# Escape the KBRO box's CV
-	echo -e "b" > /dev/ttyUSB0
+	echo -e "b" > $AVERMEDIA_TTY
 	sleep 1s
-	echo -e "b" > /dev/ttyUSB0
+	echo -e "b" > $AVERMEDIA_TTY
 	sleep 1s
-	echo -e "b" > /dev/ttyUSB0
+	echo -e "b" > $AVERMEDIA_TTY
 	sleep 1s
-	echo -e "b" > /dev/ttyUSB0
+	echo -e "b" > $AVERMEDIA_TTY
 	sleep 10s
 }
 
@@ -41,40 +41,40 @@ sleep 3
 # escapeKBROcv
 
 # Switch channel
-echo -e $CHANNEL > /dev/ttyUSB0
+echo -e $CHANNEL > $AVERMEDIA_TTY
 sleep 10s
 
 # Turn on/off PX RC-8000 box to workaround no-sound issue
-echo -e "p" > /dev/ttyUSB0
+echo -e "p" > $AVERMEDIA_TTY
 sleep 5s
-echo -e "p" > /dev/ttyUSB0
+echo -e "p" > $AVERMEDIA_TTY
 sleep 5s
 
 # Escape last state of recorder
-echo -e "E" > /dev/ttyUSB0
+echo -e "E" > $AVERMEDIA_TTY
 sleep 3s 
-echo -e "E" > /dev/ttyUSB0
+echo -e "E" > $AVERMEDIA_TTY
 sleep 3s 
-echo -e "E" > /dev/ttyUSB0
+echo -e "E" > $AVERMEDIA_TTY
 sleep 3s
-echo -e "E" > /dev/ttyUSB0
+echo -e "E" > $AVERMEDIA_TTY
 sleep 3s
-echo -e "E" > /dev/ttyUSB0
+echo -e "E" > $AVERMEDIA_TTY
 sleep 3s
 # If it's recording, stop it
-echo -e "S" > /dev/ttyUSB0
+echo -e "S" > $AVERMEDIA_TTY
 sleep 10s
-echo -e "S" > /dev/ttyUSB0
+echo -e "S" > $AVERMEDIA_TTY
 sleep 10s
 
 # Start to Record
-echo -e "R" > /dev/ttyUSB0
+echo -e "R" > $AVERMEDIA_TTY
 
 # Wait until TV program finished
 sleep $MINUTES_m
 
 # Stop recording
-echo -e "S" > /dev/ttyUSB0
+echo -e "S" > $AVERMEDIA_TTY
 sleep 20s
-echo -e "S" > /dev/ttyUSB0
+echo -e "S" > $AVERMEDIA_TTY
 sleep 10s
