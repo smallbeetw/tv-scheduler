@@ -9,7 +9,7 @@ sampling()
     do
         echo -e "?" > $AVERMEDIA_TTY
         sleep 1
-        read -N1 LED_VALUE < /dev/ttyUSB0
+        read -N1 LED_VALUE < $AVERMEDIA_TTY
         samples[i]=$LED_VALUE
         echo ${samples[$i]}
     done
