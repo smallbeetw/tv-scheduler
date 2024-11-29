@@ -177,3 +177,9 @@ switchUSB2AverMedia()
 	# one command for testing:
 	# gpioset gpiochip0 3=1; sleep 1; gpioset gpiochip0 2=0; sleep 1; gpioset gpiochip0 4=1; sleep 1; gpioset gpiochip0 2=1; sleep 1
 }
+
+printLog()
+{
+	LOG_TIME=$(date -d "$B_START_TIME $B_MINUTES minutes" +'%Y-%m-%d_%H:%M')
+	echo "$LOG_TIME $1" >> $TVSCH_LOG_PATH
+}
