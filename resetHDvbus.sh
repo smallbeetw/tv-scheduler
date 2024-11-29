@@ -3,6 +3,8 @@
 source tv-scheduler.conf
 source tv-rec-post-utils.sh
 
+printLog "Reset HD power"
+
 echo "Turn off AverMedia ER130"
 AverMediaPower
 
