@@ -20,6 +20,8 @@ CHANNEL=$1
 MINUTES_m=$2
 NAME=$3
 
+printLog "tv-rec: "$CHANNEL" "$MINUTES_m" "$NAME
+
 escapeKBROcv()
 {
 	# Escape the KBRO box's CV
