@@ -7,6 +7,8 @@ source ER130-utils.sh
 
 postRoutine()
 {
+	printLog "postRoutine"
+
 	# Find out the copy target (shortest non-copy program)
 	findTarget
 
@@ -43,6 +45,8 @@ postRoutine()
 
 postRoutineSecondRound()
 {
+	printLog "postRoutineSecondRound"
+
 	# If we found *.tvrecC means that a program is not copied success
 	# Sometimes it's driver or filesystem problem, mv it back to *.tvrecF state and try again
 	tvschCs=`ls $TVSCH_PATH/*.tvschC`
@@ -77,6 +81,8 @@ postRoutineSecondRound()
 
 checkAndResetBoxState()
 {
+	printLog "checkAndResetBoxState"
+
 	# check the LED state on ER130
 	# Sampling the state of LED first
 	ledSampling
