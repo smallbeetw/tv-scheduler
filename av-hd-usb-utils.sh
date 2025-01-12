@@ -84,3 +84,13 @@ switchUSB2AverMedia()
 	# one command for testing:
 	# gpioset gpiochip0 3=1; sleep 1; gpioset gpiochip0 2=0; sleep 1; gpioset gpiochip0 4=1; sleep 1; gpioset gpiochip0 2=1; sleep 1
 }
+
+resetAVHDpower()
+{
+	# Turn off power pin 1 second for reset vbus
+	gpioset gpiochip0 17=1; sleep 5
+	# Turn on power pin
+	gpioset gpiochip0 17=0; sleep 5
+
+	printLog "Reset AV HD power"
+}
