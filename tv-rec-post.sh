@@ -5,36 +5,6 @@ source tv-rec-post-utils.sh
 source av-hd-usb-utils.sh
 source ER130-utils.sh
 
-detachAvermedia()
-{
-	# Escape last state of recorder
-	echo -e "E" > $AVERMEDIA_TTY
-	sleep 3s
-	echo -e "E" > $AVERMEDIA_TTY
-	sleep 3s
-	echo -e "E" > $AVERMEDIA_TTY
-	sleep 3s
-	echo -e "E" > $AVERMEDIA_TTY
-	sleep 3s
-	echo -e "E" > $AVERMEDIA_TTY
-	sleep 3s
-	# Press MENU and F1 key to detach disk from avermedia box
-	echo -e "M" > $AVERMEDIA_TTY
-	sleep 3s
-	echo -e "F" > $AVERMEDIA_TTY
-	sleep 10s
-	echo -e "F" > $AVERMEDIA_TTY
-	sleep 10s
-	echo -e "F" > $AVERMEDIA_TTY
-	sleep 10s
-	echo -e "O" > $AVERMEDIA_TTY
-	sleep 3s
-	echo -e "E" > $AVERMEDIA_TTY
-	sleep 3s
-	echo -e "E" > $AVERMEDIA_TTY
-	sleep 3s
-}
-
 postRoutine()
 {
 	# Find out the copy target (shortest non-copy program)
