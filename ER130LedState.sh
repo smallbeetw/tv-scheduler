@@ -3,7 +3,7 @@
 source tv-scheduler.conf
 source tv-rec-post-utils.sh
 
-sampling()
+ledSampling()
 {
     for i in {0..9};
     do
@@ -16,7 +16,7 @@ sampling()
 }
 
 
-ledConstantlyBright()
+ledConstantlyGreenBright()
 {
     CONSTANT=true
     sample0=${samples[0]}
@@ -29,9 +29,9 @@ ledConstantlyBright()
     done
     if [ $CONSTANT == true ]; then
 	TVSCH_FILE=$TVSCH_FILE"B"
-        echo "Constantly Bright"
+        echo "Constantly Green Bright"
     else
-        echo "NOT Constantly Bright"
+        echo "NOT Constantly Green Bright"
     fi
 }
 
@@ -39,6 +39,6 @@ ledConstantlyBright()
 
 # ledBreathing
 
-sampling
+ledSampling
 
-ledConstantlyBright
+ledConstantlyGreenBright
