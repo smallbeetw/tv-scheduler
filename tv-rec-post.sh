@@ -3,6 +3,7 @@
 source tv-scheduler.conf
 source tv-rec-post-utils.sh
 source av-hd-usb-utils.sh
+source ER130-utils.sh
 
 detachAvermedia()
 {
@@ -104,8 +105,30 @@ postRoutineSecondRound()
 	done
 }
 
+checkAndResetBoxState()
+{
+	# check the LED state on ER130
+	# Sampling the state of LED first
+	ledSampling
+
+	# If LED state is NOT constantly green bright
+	# then reset AV hard drive's power and reboot
+	# AVerMedia Box to try re-mount AV HD.
+	ledConstantlyGreenBright
+	if [ $CONSTANTGREEN == false ]; then
+		# Turn off AverMedia ER130
+		AverMediaPower
+		# reset AV HD power
+		resetAVHDpower
+		# Turn on AverMedia ER130 for remount HD
+		AverMediaPower
+	fi
+}
+
 postRoutine
 
 postRoutineSecondRound
+
+checkAndResetBoxState
 
 # TODO: remove tvsch file?
