@@ -42,7 +42,6 @@ postRoutine()
 	checkSlot
 
 	AverMediaPower
-	sleep 10
 
 	switchUSB2Rasp
 	sleep 5
@@ -64,7 +63,6 @@ postRoutine()
 	sleep 3
 
 	AverMediaPower
-	sleep 10
 
 	# AverMediaFixDisk
 

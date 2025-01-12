@@ -38,7 +38,6 @@ fixAvermediaDisk
 # turn on ER130 by sending power IR code
 echo "Turn on ER130"
 AverMediaPower
-sleep 5
 
 # run the fix routing on ER130 side
 echo "Run the Fix routing on E130"

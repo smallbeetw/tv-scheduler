@@ -78,7 +78,7 @@ AverMediaPower()
 {
 	# power off (standby) AverMedia
 	echo -e "P" > $AVERMEDIA_TTY
-	sleep 20s
+	sleep 30s
 }
 
 AverMediaFixDisk()
