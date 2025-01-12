@@ -1,7 +1,6 @@
 #!/bin/bash
 
 source tv-scheduler.conf
-source tv-rec-post-utils.sh
-
+source av-hd-usb-utils.sh
 
 switchUSB2Rasp

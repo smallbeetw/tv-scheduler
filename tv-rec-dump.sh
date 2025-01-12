@@ -2,6 +2,7 @@
 
 source tv-scheduler.conf
 source tv-rec-post-utils.sh
+source av-hd-usb-utils.sh
 
 AVERMEDIA_TTY=/dev/ttyUSB0
 
