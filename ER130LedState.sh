@@ -28,7 +28,6 @@ ledConstantlyGreenBright()
         fi
     done
     if [ $CONSTANT == true ]; then
-	TVSCH_FILE=$TVSCH_FILE"B"
         echo "Constantly Green Bright"
     else
         echo "NOT Constantly Green Bright"
