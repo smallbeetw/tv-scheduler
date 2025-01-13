@@ -45,7 +45,6 @@ ledSampling()
     printLog "LED samples: ${samples[*]}"
 }
 
-
 ledConstantlyGreenBright()
 {
     CONSTANTGREEN=false
@@ -53,7 +52,11 @@ ledConstantlyGreenBright()
     sample0=${samples[0]}
     for i in ${samples[@]};
     do
-        if [[ "$sample0" != "$i" ]]; then
+	# Let's set tolerance = 1 for sampling value
+	# which means that it's NOT constant when difference > 1
+	difference=`expr $sample0 - $i`
+	abs=${difference#-}
+	if [ $abs -gt 1 ]; then
             CONSTANT=false
             break
         fi
