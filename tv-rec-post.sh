@@ -92,12 +92,18 @@ checkAndResetBoxState()
 	# AVerMedia Box to try re-mount AV HD.
 	ledConstantlyGreenBright
 	if [ $CONSTANTGREEN == false ]; then
-		# Turn off AverMedia ER130
-		AverMediaPower
-		# reset AV HD power
-		resetAVHDpower
-		# Turn on AverMedia ER130 for remount HD
-		AverMediaPower
+		# sampling again to confirm
+		sleep 30s
+		ledSampling
+		ledConstantlyGreenBright
+		if [ $CONSTANTGREEN == false ]; then
+			# Turn off AverMedia ER130
+			AverMediaPower
+			# reset AV HD power
+			resetAVHDpower
+			# Turn on AverMedia ER130 for remount HD
+			AverMediaPower
+		fi
 	fi
 }
 
