@@ -90,6 +90,6 @@ AverMediaFixDisk()
 
 printLog()
 {
-	LOG_TIME=$(date -d "$B_START_TIME $B_MINUTES minutes" +'%Y-%m-%d_%H:%M')
+	LOG_TIME=$(date -d "$B_START_TIME $B_MINUTES minutes" +'%Y-%m-%d_%H:%M:%S')
 	echo "$LOG_TIME $1" >> $TVSCH_LOG_PATH
 }
