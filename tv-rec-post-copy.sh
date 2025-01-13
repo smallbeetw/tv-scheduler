@@ -25,8 +25,8 @@ matchMP4()
 			MATCH_MP4_FILENAME=$mp4
 		fi
 	done
-	echo "MATCH_MP4_NAME: " $MATCH_MP4_NAME
-	echo "MATCH_MP4_FILENAME: " $MATCH_MP4_FILENAME
+	printLog "MATCH_MP4_NAME: " $MATCH_MP4_NAME
+	printLog "MATCH_MP4_FILENAME: " $MATCH_MP4_FILENAME
 }
 
 copy()
@@ -74,7 +74,7 @@ delMatchMP4()
 	if command -v ffprobe &> /dev/null; then
 		FFPROBE_ERR=$(ffprobe -v error $DEST_FILE 2>&1)
 		if [ ! -z "$FFPROBE_ERR" ]; then
-			echo "FFPROBE_ERR: " $FFPROBE_ERR
+			printLog "FFPROBE_ERR: " $FFPROBE_ERR
 			# change .tvschD back to .tvschC. [C] means Copy.
 			# If this is the first round, tv-rec-post will set to [F]
 			# for running the second round copy.
@@ -85,7 +85,7 @@ delMatchMP4()
 	if [ $SIZE_SOURCE_MP4 -eq $SIZE_DEST_FILE ] && [ -z "$FFPROBE_ERR" ]; then
 		rm $MATCH_MP4_FILENAME
 		sync
-		echo "Removed source MP4 file: " $MATCH_MP4_FILENAME
+		printLog "Removed source MP4 file: " $MATCH_MP4_FILENAME
 	fi
 }
 
