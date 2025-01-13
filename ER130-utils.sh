@@ -75,4 +75,5 @@ AverMediaPower()
 	# power off (standby) or power on AverMedia
 	echo -e "P" > $AVERMEDIA_TTY
 	sleep 30s
+	# 30 seconds is enough?
 }
