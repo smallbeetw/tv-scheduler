@@ -74,13 +74,6 @@ setBaudRate()
 	screen -S $SNAME -dm /dev/ttyUSB0 115200; sleep 5; screen -X -S $SNAME quit
 }
 
-AverMediaPower()
-{
-	# power off (standby) AverMedia
-	echo -e "P" > $AVERMEDIA_TTY
-	sleep 30s
-}
-
 AverMediaFixDisk()
 {
 	# Sometimes that Avermedia E130 requests user to push _OK_ button

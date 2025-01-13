@@ -2,6 +2,7 @@
 
 source tv-scheduler.conf
 source tv-rec-post-utils.sh
+source ER130-utils.sh
 
 printLog "Reset HD power"
 

@@ -64,3 +64,11 @@ ledConstantlyGreenBright()
         printLog "NOT Constantly Green Bright"
     fi
 }
+
+AverMediaPower()
+{
+	printLog "AverMediaPower"
+	# power off (standby) or power on AverMedia
+	echo -e "P" > $AVERMEDIA_TTY
+	sleep 30s
+}
