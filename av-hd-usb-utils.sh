@@ -43,7 +43,7 @@ switchUSB2Rasp()
 	# Switch data pins to Raspberry Pi side 
 	gpioset gpiochip0 27=1; sleep 1
 
-	echo "switched USB to Raspberry pi"
+	printLog "switched USB to Raspberry pi"
 	# one command for testing:
 	# gpioset gpiochip0 2=0; sleep 1; gpioset gpiochip0 4=0; sleep 1; gpioset gpiochip0 2=1; sleep 1; gpioset gpiochip0 3=0; sleep 1
 }
@@ -80,7 +80,7 @@ switchUSB2AverMedia()
 	# Turn on power pin
 	gpioset gpiochip0 17=0; sleep 1
 	
-	echo "switched USB to AverMedia"
+	printLog "switched USB to AverMedia"
 	# one command for testing:
 	# gpioset gpiochip0 3=1; sleep 1; gpioset gpiochip0 2=0; sleep 1; gpioset gpiochip0 4=1; sleep 1; gpioset gpiochip0 2=1; sleep 1
 }
