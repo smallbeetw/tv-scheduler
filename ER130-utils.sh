@@ -41,8 +41,8 @@ ledSampling()
         sleep 1
         read -N1 LED_VALUE < $AVERMEDIA_TTY
         samples[i]=$LED_VALUE
-        echo ${samples[$i]}
     done
+    printLog "LED samples: ${samples[*]}"
 }
 
 
@@ -60,6 +60,7 @@ ledConstantlyGreenBright()
     done
     if [ $CONSTANT == true ]; then
 	CONSTANTGREEN=true
+	printLog "Constantly Green Bright"
     else
         printLog "NOT Constantly Green Bright"
     fi
