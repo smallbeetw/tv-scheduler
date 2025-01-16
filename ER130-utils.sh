@@ -45,10 +45,16 @@ ledSampling()
     printLog "LED samples: ${samples[*]}"
 }
 
+# Patterns of sampling:
+#   Constantly Green Bright:
+#     LED samples: 4 4 4 4 4 4 4 4 4 4
+#     LED samples: 5 4 4 4 4 4 4 4 4 4
+#   NOT Constantly Green Bright
+#     LED samples: 4 4 4 4 4 4 4 5 0 0
+#     LED samples: 0 0 0 4 0 0 0 0 0 2
 ledConstantlyGreenBright()
 {
-    CONSTANTGREEN=false
-    CONSTANT=true
+    CONSTANTGREEN=true
     sample0=${samples[0]}
     for i in ${samples[@]};
     do
@@ -57,12 +63,11 @@ ledConstantlyGreenBright()
 	difference=`expr $sample0 - $i`
 	abs=${difference#-}
 	if [ $abs -gt 1 ]; then
-            CONSTANT=false
+	    CONSTANTGREEN=false
             break
         fi
     done
-    if [ $CONSTANT == true ]; then
-	CONSTANTGREEN=true
+    if [ $CONSTANTGREEN == true ]; then
 	printLog "Constantly Green Bright"
     else
         printLog "NOT Constantly Green Bright"
