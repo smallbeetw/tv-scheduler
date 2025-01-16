@@ -98,12 +98,11 @@ checkAndResetBoxState()
 		ledConstantlyGreenBright
 		if [ $CONSTANTGREEN == false ]; then
 			# Turn off AverMedia ER130
-			# AverMediaPower
+			AverMediaPower
 			# reset AV HD power
-			# resetAVHDpower
+			resetAVHDpower
 			# Turn on AverMedia ER130 for remount HD
-			# AverMediaPower
-			printLog "reset AV HD power (pseudo)"
+			AverMediaPower
 		fi
 	fi
 }
