@@ -22,19 +22,6 @@ NAME=$3
 
 printLog "tv-rec: "$CHANNEL" "$MINUTES_m" "$NAME
 
-escapeKBROcv()
-{
-	# Escape the KBRO box's CV
-	echo -e "b" > $AVERMEDIA_TTY
-	sleep 1s
-	echo -e "b" > $AVERMEDIA_TTY
-	sleep 1s
-	echo -e "b" > $AVERMEDIA_TTY
-	sleep 1s
-	echo -e "b" > $AVERMEDIA_TTY
-	sleep 10s
-}
-
 # Set baud rate of Arduino
 setBaudRate
 sleep 3
