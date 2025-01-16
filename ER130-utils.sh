@@ -77,3 +77,17 @@ AverMediaPower()
 	sleep 30s
 	# 30 seconds is enough?
 }
+
+AverMediaFixDisk()
+{
+	# Sometimes that Avermedia E130 requests user to push _OK_ button
+	# to fix disk because it found broken file on disk. So we push
+	# OK button a couple of times to trigger the fixing after E130 be
+	# powered on.
+	echo -e "O" > $AVERMEDIA_TTY
+	sleep 15s
+	echo -e "O" > $AVERMEDIA_TTY
+	sleep 15s
+	echo -e "O" > $AVERMEDIA_TTY
+	sleep 5s
+}
