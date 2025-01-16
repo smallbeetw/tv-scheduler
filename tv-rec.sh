@@ -20,6 +20,7 @@ CHANNEL=$1
 MINUTES_m=$2
 NAME=$3
 
+printLog "        "
 printLog "tv-rec: "$CHANNEL" "$MINUTES_m" "$NAME
 
 # Set baud rate of Arduino
