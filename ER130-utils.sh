@@ -52,6 +52,7 @@ ledSampling()
 #   NOT Constantly Green Bright
 #     LED samples: 4 4 4 4 4 4 4 5 0 0
 #     LED samples: 0 0 0 4 0 0 0 0 0 2
+#   Return: CONSTANTGREEN=true
 ledConstantlyGreenBright()
 {
     CONSTANTGREEN=true
@@ -71,6 +72,39 @@ ledConstantlyGreenBright()
 	printLog "Constantly Green Bright"
     else
         printLog "NOT Constantly Green Bright"
+    fi
+}
+
+# Patterns of sampling:
+#   Green Flashes:
+#     LED samples: 4 4 4 4 4 4 4 5 0 0
+#     LED samples: 0 0 0 4 0 0 0 0 0 2
+#     LED samples: 6 0 0 0 0 0 6 0 0 0
+#     LED samples: 5 5 0 5 5 1 5 5 0 5
+#     LED samples: 6 1 6 1 1 1 1 1 6 1
+#     LED samples: 1 1 1 1 6 1 1 1 1 1
+#   The lowest value is 0 or 1
+#   Difference between highest and lowest values >= 4
+#   Return: GREENFLASHING=true
+ledGreenFlashing()
+{
+    GREENFLASHING=false
+    lowest=9
+    highest=0
+    sample0=${samples[0]}
+    for i in ${samples[@]};
+    do
+	if [ $i -lt $lowest ]; then
+		lowest=$i
+	fi
+	if [ $i -gt $highest ]; then
+		highest=$i
+	fi
+    done
+    difference=`expr $highest - $lowest`
+    if [[ $lowest -le 1 ]] && [[ $difference -ge 4 ]]; then
+	GREENFLASHING=true
+	printLog "Green Flashing"
     fi
 }
 
