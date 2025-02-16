@@ -95,13 +95,22 @@ checkAndResetBoxState()
 		# sampling again to confirm
 		sleep 30s
 		ledSampling
-		ledConstantlyGreenBright
-		if [ $CONSTANTGREEN == false ]; then
+		# If green flashing
+		ledGreenFlashing
+		if [ $GREENFLASHING == true ]; then
 			# Turn off AverMedia ER130
 			AverMediaPower
 			# reset AV HD power
 			resetAVHDpower
 			# Turn on AverMedia ER130 for remount HD
+			AverMediaPower
+			# sampling again for later amber bright checking
+			ledSampling
+		fi
+		# Check if it's still in constantly amber bright
+		ledConstantlyAmberBright
+		if [ $CONSTANTAMBER == true ]; then
+			# Turn on AverMedia ER130
 			AverMediaPower
 		fi
 	fi
