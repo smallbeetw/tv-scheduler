@@ -108,6 +108,45 @@ ledGreenFlashing()
     fi
 }
 
+# Patterns of sampling:
+#   Constantly Amber Bright:
+#     LED samples: 5 7 6 6 5 5 5 4 5 4
+#     LED samples: 5 4 8 7 7 6 6 5 5 4
+#     LED samples: 6 5 5 7 6 5 6 7 5 4
+#     LED samples: 6 6 6 9 7 5 4 4 7 8
+#     LED samples: 5 4 7 8 6 5 6 6 6 6
+#   There are four or five consecutive numbers
+#   No 0 or 1 value
+#   Return: CONSTANTAMBER=true
+ledConstantlyAmberBright()
+{
+    IFS=$'\n' sorted=($(sort <<<"${samples[*]}"))
+    unset IFS
+
+    CONSTANTAMBER=false
+    consecutive=1
+    for ((index=0; index < ${#sorted[@]}; index++)); do
+	# If 0 or 1 be found, then it's NOT a sample of constantly amber
+	if [ ${sorted[index]} -le 1 ]; then
+	    break
+	fi
+	# if (i+1) - i = 1, then they are consecutive
+	if [ $(($index+1)) -lt ${#sorted[@]} ]; then
+	    if [ ${sorted[index+1]} -gt ${sorted[index]} ]; then
+		difference=`expr ${sorted[index+1]} - ${sorted[index]}`
+		if [ $difference -eq 1 ]; then
+		    consecutive=$(($consecutive+1))
+		fi
+	    fi
+	fi
+    done
+    # consecutive >= 4 means the samples have 4 consecutive numbers at least
+    if [ $consecutive -ge 4 ]; then
+	CONSTANTAMBER=true
+	printLog "Constantly Amber"
+    fi
+}
+
 AverMediaPower()
 {
 	printLog "AverMediaPower"
