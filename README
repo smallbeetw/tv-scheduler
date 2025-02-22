@@ -1,21 +1,34 @@
-                       ===========================================
-                       TV Program Scheduler/Recorder Scripts Suite
-                       ===========================================
+TV Program Scheduler/Recorder Scripts Suite
+===========================================
 
-======
+Dependency
+----------
+- bash
+- at
+  For scheduling TV recording task.
+- screen
+  For setting Baud Rate of ttyUSB0 to Arduino
+
+Installation
+------------
+Just copy to /root/tv-scheduler folder
+
 Setup
-======
+-----
+- If you want, you can setup file path in tv-scheduler.conf
+- Enable atd
+  # systemctl enable atd
+- Run tv-rec-init.sh before using tv-scheduler
+  This script must be executed every time the computer is restarted.
 
-# systemctl enable atd
-
-=============
 Run Scheduler
-=============
-# ./tv-sch.sh 2021-05-21 21:00 95m 65 音速小子
-# ./tv-sch-D.sh 12:00 60m 10 中視午間新聞
+-------------
+- Add a one time recording task:
+  # ./tv-sch.sh 2021-05-21 21:00 95m 65 音速小子
+- Add a daily recording task:
+  # ./tv-sch-D.sh 12:00 60m 10 中視午間新聞
 
-==============
 Check Schedule
-==============
+--------------
 atq
 at -c 5		# show the detail of job 5
