@@ -15,6 +15,7 @@
 
 source tv-scheduler.conf
 
+# Will 'exit 0' when it can not find any target task must be copied
 findTarget()
 {
 	# find out the tvschF that is shortest TV program 
@@ -50,7 +51,7 @@ findTarget()
 	echo "TARGET_EPOCH: " $TARGET_EPOCH
 }
 
-
+# Will 'exit 0' when it can not find any time slot for running copy task
 checkSlot()
 {
 	# find out the next program and check the time slot from now 

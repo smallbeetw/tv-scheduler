@@ -164,8 +164,10 @@ delOutdatedMP4s()
 }
 
 # Find out the copy target (shortest non-copy program)
+# Will 'exit 0' when it can not find any target
 findTarget
 
+# Will 'exit 0' when it can not find any time slot for running copy task
 checkSlot
 
 matchMP4
