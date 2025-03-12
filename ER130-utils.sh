@@ -65,6 +65,8 @@ ledSampling()
 #   NOT Constantly Green Bright
 #     LED samples: 4 4 4 4 4 4 4 5 0 0
 #     LED samples: 0 0 0 4 0 0 0 0 0 2
+#   All values are almost the same.
+#   Only allow tolerance = 1
 #   Return: CONSTANTGREEN=true
 ledConstantlyGreenBright()
 {
@@ -96,8 +98,10 @@ ledConstantlyGreenBright()
 #     LED samples: 5 5 0 5 5 1 5 5 0 5
 #     LED samples: 6 1 6 1 1 1 1 1 6 1
 #     LED samples: 1 1 1 1 6 1 1 1 1 1
+#     LED samples: 4 0 3 2 0 0 0 0 1 3
+#     LED samples: 0 0 0 0 2 3 0 0 0 0
 #   The lowest value is 0 or 1
-#   Difference between highest and lowest values >= 4
+#   Difference between highest and lowest values >= 3
 #   Return: GREENFLASHING=true
 ledGreenFlashing()
 {
@@ -115,7 +119,7 @@ ledGreenFlashing()
 	fi
     done
     difference=`expr $highest - $lowest`
-    if [[ $lowest -le 1 ]] && [[ $difference -ge 4 ]]; then
+    if [[ $lowest -le 1 ]] && [[ $difference -ge 3 ]]; then
 	GREENFLASHING=true
 	printLog "Green Flashing"
     fi
