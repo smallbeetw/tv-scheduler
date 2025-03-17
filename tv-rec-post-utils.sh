@@ -15,9 +15,17 @@
 
 source tv-scheduler.conf
 
+printLog()
+{
+	LOG_TIME=$(date -d "$B_START_TIME $B_MINUTES minutes" +'%Y-%m-%d_%H:%M:%S')
+	echo "$LOG_TIME $1" >> $TVSCH_LOG_PATH
+}
+
 # Will 'exit 0' when it can not find any target task must be copied
 findTarget()
 {
+	printLog "tv-rec-post-utils: findTarget"
+
 	# find out the tvschF that is shortest TV program 
 	# .tvschF format: 2020-05-31_01:15_170m_65_搶救雷恩大兵.tvschF
 	TARGET_MINUTES=0
@@ -47,13 +55,14 @@ findTarget()
 
 	echo "TARGET_NAME: " $TARGET_NAME
 	echo "TARGET_MINUTES: " $TARGET_MINUTES
-	echo "TARGET_TVSCHF: " $TARGET_TVSCHF
 	echo "TARGET_EPOCH: " $TARGET_EPOCH
+	printLog "TARGET_TVSCHF: "$TARGET_TVSCHF
 }
 
 # Will 'exit 0' when it can not find any time slot for running copy task
 checkSlot()
 {
+	printLog "tv-rec-post-utils: checkSlot"
 	# find out the next program and check the time slot from now 
 	SLOT_EPOCH=0
 	MIN_SLOT_EPOCH=0
@@ -79,17 +88,11 @@ checkSlot()
 	if [ ! $MIN_SLOT_EPOCH -eq 0 ] && [ $SLOT_MINUTES -lt $TARGET_MINUTES ]; then
 		exit 0
 	fi
-	echo "SLOT_MINUTES: " $SLOT_MINUTES
+	printLog "SLOT_MINUTES: "$SLOT_MINUTES
 }
 
 setBaudRate()
 {
 	SNAME=$RANDOM 
 	screen -S $SNAME -dm /dev/ttyUSB0 115200; sleep 5; screen -X -S $SNAME quit
-}
-
-printLog()
-{
-	LOG_TIME=$(date -d "$B_START_TIME $B_MINUTES minutes" +'%Y-%m-%d_%H:%M:%S')
-	echo "$LOG_TIME $1" >> $TVSCH_LOG_PATH
 }

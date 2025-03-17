@@ -87,7 +87,7 @@ delMatchMP4()
 	if command -v ffprobe &> /dev/null; then
 		FFPROBE_ERR=$(ffprobe -v error $DEST_FILE 2>&1)
 		if [ ! -z "$FFPROBE_ERR" ]; then
-			printLog "FFPROBE_ERR: " $FFPROBE_ERR
+			printLog "FFPROBE_ERR: "$FFPROBE_ERR
 			# change .tvschD back to .tvschC. [C] means Copy.
 			# If this is the first round, tv-rec-post will set to [F]
 			# for running the second round copy.

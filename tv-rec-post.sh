@@ -77,7 +77,7 @@ postRoutineSecondRound()
 	fi
 	# Confirm that the *.tvschF file is exist, run postRoutine again
 	if [ -f "$TVSCHF" ]; then
-		echo "Launch the second around copy"
+		printLog "tv-rec-post: Launch the second around copy"
 		postRoutine
 	fi
 
