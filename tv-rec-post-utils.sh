@@ -54,9 +54,9 @@ findTarget()
 	fi
 
 	echo "TARGET_NAME: " $TARGET_NAME
-	echo "TARGET_MINUTES: " $TARGET_MINUTES
 	echo "TARGET_EPOCH: " $TARGET_EPOCH
 	printLog "TARGET_TVSCHF: "$TARGET_TVSCHF
+	printLog "TARGET_MINUTES: "$TARGET_MINUTES
 }
 
 # Will 'exit 0' when it can not find any time slot for running copy task
@@ -86,6 +86,7 @@ checkSlot()
 	# if slot minutes is smaller than target minutes, then stop copy in this time
 	SLOT_MINUTES=$((${MIN_SLOT_EPOCH}/60))
 	if [ ! $MIN_SLOT_EPOCH -eq 0 ] && [ $SLOT_MINUTES -lt $TARGET_MINUTES ]; then
+		printLog "No enough time slot for copying"
 		exit 0
 	fi
 	printLog "SLOT_MINUTES: "$SLOT_MINUTES
