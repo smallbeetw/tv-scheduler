@@ -132,7 +132,9 @@ ledGreenFlashing()
 #     LED samples: 6 5 5 7 6 5 6 7 5 4
 #     LED samples: 6 6 6 9 7 5 4 4 7 8
 #     LED samples: 5 4 7 8 6 5 6 6 6 6
-#   There are four or five consecutive numbers
+#     LED samples: 7 4 7 7 6 5 4 4 5 7
+#     LED samples: 4 4 4 7 7 5 5 4 4 4
+#   There are three or more consecutive numbers
 #   No 0 or 1 value
 #   Return: CONSTANTAMBER=true
 ledConstantlyAmberBright()
@@ -147,18 +149,18 @@ ledConstantlyAmberBright()
 	if [ ${sorted[index]} -le 1 ]; then
 	    break
 	fi
-	# if (i+1) - i = 1, then they are consecutive
+	# if (i+1) - i = 1 or 2, then they are consecutive
 	if [ $(($index+1)) -lt ${#sorted[@]} ]; then
 	    if [ ${sorted[index+1]} -gt ${sorted[index]} ]; then
 		difference=`expr ${sorted[index+1]} - ${sorted[index]}`
-		if [ $difference -eq 1 ]; then
+		if [[ $difference -gt 0 ]] && [[ $difference -le 2 ]]; then
 		    consecutive=$(($consecutive+1))
 		fi
 	    fi
 	fi
     done
-    # consecutive >= 4 means the samples have 4 consecutive numbers at least
-    if [ $consecutive -ge 4 ]; then
+    # consecutive >= 3 means the samples have 3 consecutive numbers at least
+    if [ $consecutive -ge 3 ]; then
 	CONSTANTAMBER=true
 	printLog "Constantly Amber"
     fi
