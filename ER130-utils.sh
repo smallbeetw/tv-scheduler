@@ -100,7 +100,10 @@ ledConstantlyGreenBright()
 #     LED samples: 1 1 1 1 6 1 1 1 1 1
 #     LED samples: 4 0 3 2 0 0 0 0 1 3
 #     LED samples: 0 0 0 0 2 3 0 0 0 0
-#   The lowest value is 0 or 1
+#   The following samples similar with amber bright
+#     LED samples: 1 3 4 3 3 2 2 6 4 2
+#     LED samples: 2 3 3 4 5 2 3 2 2 3
+#   The lowest value is 0, 1 or 2
 #   Difference between highest and lowest values >= 3
 #   Return: GREENFLASHING=true
 ledGreenFlashing()
@@ -119,7 +122,7 @@ ledGreenFlashing()
 	fi
     done
     difference=`expr $highest - $lowest`
-    if [[ $lowest -le 1 ]] && [[ $difference -ge 3 ]]; then
+    if [[ $lowest -le 2 ]] && [[ $difference -ge 3 ]]; then
 	GREENFLASHING=true
 	printLog "Green Flashing"
     fi
@@ -135,7 +138,7 @@ ledGreenFlashing()
 #     LED samples: 7 4 7 7 6 5 4 4 5 7
 #     LED samples: 4 4 4 7 7 5 5 4 4 4
 #   There are three or more consecutive numbers
-#   No 0 or 1 value
+#   No 0, 1 or 2 value
 #   Return: CONSTANTAMBER=true
 ledConstantlyAmberBright()
 {
@@ -146,7 +149,7 @@ ledConstantlyAmberBright()
     consecutive=1
     for ((index=0; index < ${#sorted[@]}; index++)); do
 	# If 0 or 1 be found, then it's NOT a sample of constantly amber
-	if [ ${sorted[index]} -le 1 ]; then
+	if [ ${sorted[index]} -le 2 ]; then
 	    break
 	fi
 	# if (i+1) - i = 1 or 2, then they are consecutive
