@@ -22,20 +22,29 @@ ledSampling()
 #   NOT Constantly Green Bright
 #     LED samples: 4 4 4 4 4 4 4 5 0 0
 #     LED samples: 0 0 0 4 0 0 0 0 0 2
+#   All values are almost the same.
+#   Only allow tolerance = 1
+#   Return: CONSTANTGREEN=true
 ledConstantlyGreenBright()
 {
-    CONSTANT=true
+    CONSTANTGREEN=true
     sample0=${samples[0]}
     for i in ${samples[@]};
     do
-        if [[ "$sample0" != "$i" ]]; then
-            CONSTANT=false
+	# Let's set tolerance = 1 for sampling value
+	# which means that it's NOT constant when difference > 1
+	difference=`expr $sample0 - $i`
+	abs=${difference#-}
+	if [ $abs -gt 1 ]; then
+	    CONSTANTGREEN=false
             break
         fi
     done
-    if [ $CONSTANT == true ]; then
-        echo "Constantly Green Bright"
+    if [ $CONSTANTGREEN == true ]; then
+	printLog "Constantly Green Bright"
+	echo "Constantly Green Bright"
     else
+        printLog "NOT Constantly Green Bright"
         echo "NOT Constantly Green Bright"
     fi
 }
