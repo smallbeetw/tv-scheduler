@@ -19,21 +19,27 @@ ledSampling()
 #   Constantly Green Bright:
 #     LED samples: 4 4 4 4 4 4 4 4 4 4
 #     LED samples: 5 4 4 4 4 4 4 4 4 4
+#     LED samples: 3 3 3 3 3 3 3 4 3 3
 #   NOT Constantly Green Bright
 #     LED samples: 4 4 4 4 4 4 4 5 0 0
 #     LED samples: 0 0 0 4 0 0 0 0 0 2
-#   All values are almost the same.
+#     LED samples: 5 6 5 4 4 5 6 6 5 4
+#   Every value should be compared with the min value
 #   Only allow tolerance = 1
 #   Return: CONSTANTGREEN=true
 ledConstantlyGreenBright()
 {
+    IFS=$'\n' sorted=($(sort <<<"${samples[*]}"))
+    unset IFS
     CONSTANTGREEN=true
-    sample0=${samples[0]}
+    min_sample=${sorted[0]}
+    echo "samples: ${samples[*]}"
+    echo "min_sample: ${min_sample}"
     for i in ${samples[@]};
     do
 	# Let's set tolerance = 1 for sampling value
 	# which means that it's NOT constant when difference > 1
-	difference=`expr $sample0 - $i`
+	difference=`expr $min_sample - $i`
 	abs=${difference#-}
 	if [ $abs -gt 1 ]; then
 	    CONSTANTGREEN=false
@@ -140,6 +146,7 @@ ledConstantlyAmberBright()
 # Constantly Green Bright:
 #samples=(4 4 4 4 4 4 4 4 4 4)
 #samples=(5 4 4 4 4 4 4 4 4 4)
+#samples=(3 3 3 3 3 3 3 4 3 3)
 
 # Green Flashes:
 #samples=(4 4 4 4 4 4 4 5 0 0)
@@ -154,7 +161,8 @@ ledConstantlyAmberBright()
 #samples=(6 6 6 9 7 5 4 4 7 8)
 #samples=(5 4 7 8 6 5 6 6 6 6)
 #samples=(7 4 7 7 6 5 4 4 5 7)
-samples=(4 4 4 7 7 5 5 4 4 4)
+#samples=(4 4 4 7 7 5 5 4 4 4)
+samples=(5 6 5 4 4 5 6 6 5 4)
 
 ledConstantlyGreenBright
 
