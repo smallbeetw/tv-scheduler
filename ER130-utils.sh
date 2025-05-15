@@ -104,6 +104,8 @@ ledConstantlyGreenBright()
 #     LED samples: 1 1 1 1 6 1 1 1 1 1
 #     LED samples: 4 0 3 2 0 0 0 0 1 3
 #     LED samples: 0 0 0 0 2 3 0 0 0 0
+#     LED samples: 4 4 1 0 1 0 2 4 0 1
+#     LED samples: 1 1 1 4 0 1 1 0 1 4
 #   The following samples similar with amber bright
 #     LED samples: 1 3 4 3 3 2 2 6 4 2
 #     LED samples: 2 3 3 4 5 2 3 2 2 3
