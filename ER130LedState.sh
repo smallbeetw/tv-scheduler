@@ -61,8 +61,9 @@ ledConstantlyGreenBright()
 #     LED samples: 0 0 0 4 0 0 0 0 0 2
 #     LED samples: 6 0 0 0 0 0 6 0 0 0
 #     LED samples: 5 5 0 5 5 1 5 5 0 5
-#   The lowest value is 0 or 1
-#   Difference between highest and lowest values >= 4
+#     LED samples: 1 1 1 1 1 1 2 3 1 1
+#   The lowest value is 0, 1 or 2
+#   Difference between highest and lowest values >= 2
 ledGreenFlashing()
 {
     GREENFLASHING=false
@@ -79,7 +80,7 @@ ledGreenFlashing()
 	fi
     done
     difference=`expr $highest - $lowest`
-    if [[ $lowest -le 1 ]] && [[ $difference -ge 4 ]]; then
+    if [[ $lowest -le 2 ]] && [[ $difference -ge 2 ]]; then
 	GREENFLASHING=true
 	printLog "Green Flashing"
 	echo "Green Flashing"
@@ -101,7 +102,7 @@ ledGreenFlashing()
 #     LED samples: 7 4 7 7 6 5 4 4 5 7
 #     LED samples: 4 4 4 7 7 5 5 4 4 4
 #   There are three or more consecutive numbers
-#   No 0 or 1 value
+#   No 0, 1 or 2 value
 ledConstantlyAmberBright()
 {
     IFS=$'\n' sorted=($(sort <<<"${samples[*]}"))
@@ -111,8 +112,8 @@ ledConstantlyAmberBright()
     CONSTANTAMBER=false
     consecutive=1
     for ((index=0; index < ${#sorted[@]}; index++)); do
-	# If 0 or 1 be found, then it's NOT a sample of constantly amber
-	if [ ${sorted[index]} -le 1 ]; then
+	# If 0, 1 or 2 be found, then it's NOT a sample of constantly amber
+	if [ ${sorted[index]} -le 2 ]; then
 	    break
 	fi
 	# if (i+1) - i = 1 or 2, then they are consecutive
@@ -153,6 +154,9 @@ ledConstantlyAmberBright()
 #samples=(0 0 0 4 0 0 0 0 0 2)
 #samples=(6 0 0 0 0 0 6 0 0 0)
 #samples=(5 5 0 5 5 1 5 5 0 5)
+#samples=(3 2 3 1 1 1 3 2 3 2)
+#samples=(1 1 1 1 1 1 2 3 1 1)
+#samples=(2 2 2 4 3 2 2 2 2 3)
 
 # Constantly Amber Bright:
 #samples=(5 7 6 6 5 5 5 4 5 4)
@@ -162,10 +166,16 @@ ledConstantlyAmberBright()
 #samples=(5 4 7 8 6 5 6 6 6 6)
 #samples=(7 4 7 7 6 5 4 4 5 7)
 #samples=(4 4 4 7 7 5 5 4 4 4)
-samples=(5 6 5 4 4 5 6 6 5 4)
+#samples=(5 6 5 4 4 5 6 6 5 4)
 
+echo ""
+echo "Constantly Green Bright testing..."
 ledConstantlyGreenBright
+echo ""
 
+echo "Green Flashing testing..."
 ledGreenFlashing
+echo ""
 
+echo "Constantly Amber Bright testing..."
 ledConstantlyAmberBright

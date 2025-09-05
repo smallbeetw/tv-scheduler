@@ -106,11 +106,17 @@ ledConstantlyGreenBright()
 #     LED samples: 0 0 0 0 2 3 0 0 0 0
 #     LED samples: 4 4 1 0 1 0 2 4 0 1
 #     LED samples: 1 1 1 4 0 1 1 0 1 4
+#     LED samples: 3 2 3 1 1 1 3 2 3 2
+#     LED samples: 2 1 2 2 3 2 1 1 2 2
+#     LED samples: 3 3 2 2 1 1 2 2 3 1
+#     LED samples: 1 2 3 2 3 1 2 2 2 2
+#     LED samples: 1 1 1 1 1 1 2 3 1 1
 #   The following samples similar with amber bright
 #     LED samples: 1 3 4 3 3 2 2 6 4 2
 #     LED samples: 2 3 3 4 5 2 3 2 2 3
+#     LED samples: 2 2 2 4 3 2 2 2 2 3
 #   The lowest value is 0, 1 or 2
-#   Difference between highest and lowest values >= 3
+#   Difference between highest and lowest values >= 2
 #   Return: GREENFLASHING=true
 ledGreenFlashing()
 {
@@ -128,7 +134,7 @@ ledGreenFlashing()
 	fi
     done
     difference=`expr $highest - $lowest`
-    if [[ $lowest -le 2 ]] && [[ $difference -ge 3 ]]; then
+    if [[ $lowest -le 2 ]] && [[ $difference -ge 2 ]]; then
 	GREENFLASHING=true
 	printLog "Green Flashing"
     fi
@@ -154,7 +160,7 @@ ledConstantlyAmberBright()
     CONSTANTAMBER=false
     consecutive=1
     for ((index=0; index < ${#sorted[@]}; index++)); do
-	# If 0 or 1 be found, then it's NOT a sample of constantly amber
+	# If 0, 1 or 2 be found, then it's NOT a sample of constantly amber
 	if [ ${sorted[index]} -le 2 ]; then
 	    break
 	fi
