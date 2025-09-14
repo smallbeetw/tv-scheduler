@@ -123,8 +123,15 @@ checkAndResetBoxState()
 		# Check if it's still in constantly amber bright
 		ledConstantlyAmberBright
 		if [ $CONSTANTAMBER == true ]; then
-			# Turn on AverMedia ER130
+			# Try to turn on AverMedia ER130
 			AverMediaPower
+			# sampling for checking again
+			ledSampling
+			ledConstantlyAmberBright
+			if [ $CONSTANTAMBER == true ]; then
+				# Try to turn on AverMedia ER130 again
+				AverMediaPower
+			fi
 		fi
 	fi
 }
