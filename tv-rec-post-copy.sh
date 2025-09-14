@@ -18,7 +18,7 @@ source tv-rec-post-utils.sh
 
 matchMP4()
 {
-	MIN_DEVINATION=300	
+	MIN_DEVIATION=0
 	# find out the mp4 file that matches with target tvsch
 	# AverMedia's mp4 file format: 201012-1805.mp4
 	mp4s=`ls $AVER_PATH/*.mp4`
@@ -27,7 +27,7 @@ matchMP4()
 	printLog "MP4 files count: "$mp4_count
 	for mp4 in $mp4s
 	do
-		echo $mp4
+		printLog $mp4
 		BASENAME=$(basename $mp4)
 		filename=$(echo "$BASENAME" | cut -f 1 -d '.')
 		IFS='-' read -a array <<< $filename
@@ -35,8 +35,9 @@ matchMP4()
 		START_EPOCH=$(date -d "$START_TIME" +%s)
 		DEVIATION=$((${START_EPOCH}-${TARGET_EPOCH}))
 		DEVIATION=${DEVIATION#-}
-		if [ $DEVIATION -le $MIN_DEVINATION ]; then
-			MIN_DEVINATION=$DEVIATION
+		# find out the file with the smallest devination
+		if [ "$MIN_DEVIATION" -eq 0 ] || [ "$DEVIATION" -le "$MIN_DEVIATION" ]; then
+			MIN_DEVIATION=$DEVIATION
 			MATCH_MP4_NAME=$filename	
 			MATCH_MP4_FILENAME=$mp4
 		fi
