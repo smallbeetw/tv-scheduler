@@ -22,6 +22,9 @@ matchMP4()
 	# find out the mp4 file that matches with target tvsch
 	# AverMedia's mp4 file format: 201012-1805.mp4
 	mp4s=`ls $AVER_PATH/*.mp4`
+	# pring count of mp4 files
+	mp4_count=$(echo "$mp4s" | wc -w)
+	printLog "MP4 files count: "$mp4_count
 	for mp4 in $mp4s
 	do
 		echo $mp4
