@@ -24,13 +24,32 @@ NAME=$3
 printLog "        "
 printLog "tv-rec: "$CHANNEL" "$MINUTES_m" "$NAME
 
-# check LED state before recording start
-ledSampling
-ledConstantlyGreenBright
-
 # Set baud rate of Arduino
 setBaudRate
 sleep 3
+
+# check LED state before recording start
+ledSampling
+ledConstantlyGreenBright
+if [ "$CONSTANTGREEN" = false ]; then
+	printLog "tv-rec: try to reset recorder state"
+	# Escape last state of recorder
+	echo -e "E" > $AVERMEDIA_TTY
+	sleep 3s
+	echo -e "E" > $AVERMEDIA_TTY
+	sleep 3s
+	echo -e "E" > $AVERMEDIA_TTY
+	sleep 3s
+	echo -e "E" > $AVERMEDIA_TTY
+	sleep 3s
+	echo -e "E" > $AVERMEDIA_TTY
+	sleep 3s
+	# Maybe it's still in recording, stop it
+	echo -e "S" > $AVERMEDIA_TTY
+	sleep 10s
+	echo -e "S" > $AVERMEDIA_TTY
+	sleep 10s
+fi
 
 # Escape the ISP's CV
 # escapeKBROcv
@@ -43,24 +62,7 @@ sleep 10s
 echo -e "p" > $AVERMEDIA_TTY
 sleep 5s
 echo -e "p" > $AVERMEDIA_TTY
-sleep 5s
-
-# Escape last state of recorder
-echo -e "E" > $AVERMEDIA_TTY
-sleep 3s 
-echo -e "E" > $AVERMEDIA_TTY
-sleep 3s 
-echo -e "E" > $AVERMEDIA_TTY
-sleep 3s
-echo -e "E" > $AVERMEDIA_TTY
-sleep 3s
-echo -e "E" > $AVERMEDIA_TTY
-sleep 3s
-# If it's recording, stop it
-echo -e "S" > $AVERMEDIA_TTY
-sleep 10s
-echo -e "S" > $AVERMEDIA_TTY
-sleep 10s
+sleep 15s
 
 # Start to Record
 echo -e "R" > $AVERMEDIA_TTY
@@ -74,13 +76,14 @@ ledConstantlyGreenBright
 if [ "$CONSTANTGREEN" = true ]; then
 	# sending Record code again
 	echo -e "R" > $AVERMEDIA_TTY
+	printLog "tv-rec: resend R code"
 	sleep 5s
 	# smapling LED state again
 	ledSampling
 	ledConstantlyGreenBright
 fi
 if [ "$CONSTANTGREEN" = false ]; then
-	printLog "tv-rec: start recording"
+	printLog "tv-rec: Recording started"
 else
 	printLog "tv-rec: start recording failed"
 fi
