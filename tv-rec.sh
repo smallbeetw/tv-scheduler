@@ -15,6 +15,7 @@
 
 source tv-scheduler.conf
 source tv-rec-post-utils.sh
+source ER130-utils.sh
 
 CHANNEL=$1
 MINUTES_m=$2
@@ -22,6 +23,10 @@ NAME=$3
 
 printLog "        "
 printLog "tv-rec: "$CHANNEL" "$MINUTES_m" "$NAME
+
+# check LED state before recording start
+ledSampling
+ledConstantlyGreenBright
 
 # Set baud rate of Arduino
 setBaudRate
@@ -59,6 +64,26 @@ sleep 10s
 
 # Start to Record
 echo -e "R" > $AVERMEDIA_TTY
+sleep 5s
+# check the LED state on ER130
+ledSampling
+# If LED state is still in constantly green bright,
+# which means that the recording is NOT started.
+# Let's sending 'R'ecording IR code again
+ledConstantlyGreenBright
+if [ "$CONSTANTGREEN" = true ]; then
+	# sending Record code again
+	echo -e "R" > $AVERMEDIA_TTY
+	sleep 5s
+	# smapling LED state again
+	ledSampling
+	ledConstantlyGreenBright
+fi
+if [ "$CONSTANTGREEN" = false ]; then
+	printLog "tv-rec: start recording"
+else
+	printLog "tv-rec: start recording failed"
+fi
 
 # Wait until TV program finished
 sleep $MINUTES_m
