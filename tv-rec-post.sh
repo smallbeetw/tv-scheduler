@@ -92,6 +92,16 @@ postRoutineSecondRound()
 	done
 }
 
+resetRemountAVHD()
+{
+	# Turn off AverMedia ER130
+	AverMediaPower
+	# reset AV HD power
+	resetAVHDpower
+	# Turn on AverMedia ER130 for remount HD
+	AverMediaPower
+}
+
 checkAndResetBoxState()
 {
 	printLog "tv-rec-post: checkAndResetBoxState"
@@ -111,12 +121,7 @@ checkAndResetBoxState()
 		# If green flashing
 		ledGreenFlashing
 		if [ $GREENFLASHING == true ]; then
-			# Turn off AverMedia ER130
-			AverMediaPower
-			# reset AV HD power
-			resetAVHDpower
-			# Turn on AverMedia ER130 for remount HD
-			AverMediaPower
+			resetRemountAVHD
 			# sampling again for later amber bright checking
 			ledSampling
 		fi
@@ -133,6 +138,12 @@ checkAndResetBoxState()
 				AverMediaPower
 			fi
 		fi
+		# If the LED state is neither green flashing nor constantly
+		# amber bright, then we try to handle it as green flashing.
+                ledConstantlyGreenBright
+                if [ $CONSTANTGREEN == false ]; then
+                        resetRemountAVHD
+                fi
 	fi
 }
 
