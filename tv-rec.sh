@@ -17,6 +17,23 @@ source tv-scheduler.conf
 source tv-rec-post-utils.sh
 source ER130-utils.sh
 
+# Try to start record
+tryStartRecord()
+{
+	RECORDSTARTED=false
+	# Start to Record
+	echo -e "R" > $AVERMEDIA_TTY
+	sleep 5s
+	# check the LED state on ER130
+	ledSampling
+	# If LED state is NOT in constantly green bright,
+	# that means that the recording is started.
+	ledConstantlyGreenBright
+	if [ "$CONSTANTGREEN" = false ]; then
+		RECORDSTARTED=true
+	fi
+}
+
 CHANNEL=$1
 MINUTES_m=$2
 NAME=$3
@@ -65,24 +82,13 @@ echo -e "p" > $AVERMEDIA_TTY
 sleep 15s
 
 # Start to Record
-echo -e "R" > $AVERMEDIA_TTY
-sleep 5s
-# check the LED state on ER130
-ledSampling
-# If LED state is still in constantly green bright,
-# which means that the recording is NOT started.
-# Let's sending 'R'ecording IR code again
-ledConstantlyGreenBright
-if [ "$CONSTANTGREEN" = true ]; then
-	# sending Record code again
-	echo -e "R" > $AVERMEDIA_TTY
-	printLog "tv-rec: resend R code"
-	sleep 5s
-	# smapling LED state again
-	ledSampling
-	ledConstantlyGreenBright
+tryStartRecord
+if [ "$RECORDSTARTED" = false ]; then
+	# try to start recording again
+	printLog "tv-rec: try to start recording again"
+	tryStartRecord
 fi
-if [ "$CONSTANTGREEN" = false ]; then
+if [ "$RECORDSTARTED" = true ]; then
 	printLog "tv-rec: Recording started"
 else
 	printLog "tv-rec: start recording failed"
